@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "wNPajNL1PNs=",
+  "success": true,
+  "projectFilePath": "D:\\de ik pti\\4.felev\\c#\\project\\VG8KS3_LibraryApp\\VG8KS3_LibraryApp.Api\\VG8KS3_LibraryApp.Api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\gerzs\\.nuget\\packages\\microsoft.aspnetcore.openapi\\9.0.2\\microsoft.aspnetcore.openapi.9.0.2.nupkg.sha512",
+    "C:\\Users\\gerzs\\.nuget\\packages\\microsoft.openapi\\1.6.17\\microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}

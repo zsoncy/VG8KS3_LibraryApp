@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\VG8KS3_LibraryApp.Api.props" />
+</Project>

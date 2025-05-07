@@ -32,3 +32,16 @@ D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\obj\Debu
 D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\obj\Debug\net9.0\VG8KS3_LibraryApp.Api.pdb
 D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\obj\Debug\net9.0\VG8KS3_LibraryApp.Api.genruntimeconfig.cache
 D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\obj\Debug\net9.0\ref\VG8KS3_LibraryApp.Api.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.AspNetCore.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.Extensions.Hosting.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.Extensions.Logging.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.Formatting.Compact.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.Settings.Configuration.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.Sinks.Console.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.Sinks.Debug.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Serilog.Sinks.File.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll

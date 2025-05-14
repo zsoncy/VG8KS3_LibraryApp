@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using VG8KS3_LibraryApp.Api.DataBase;
 using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
 
@@ -8,52 +10,54 @@ namespace VG8KS3_LibraryApp.Api.Controllers;
 [Route("reader")]
 public class ReaderController: ControllerBase
 {
-    private readonly IReaderService _readerService;
+    private readonly DataContext _dataContext;
 
-    public ReaderController(IReaderService readerService)
+    public ReaderController(DataContext dataContext)
     {
-        _readerService = readerService;
+        _dataContext = dataContext;
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] Reader reader)
+    public async Task<IActionResult> Add([FromBody] Reader reader)
     {
-        var existingReader = _readerService.Get(reader.ReaderId);
+        var existingReader = await _dataContext.Readers.FindAsync(reader.ReaderId);
 
         if (existingReader is not null)
         {
             return Conflict();
         }
         
-        _readerService.Add(reader);
+        _dataContext.Readers.Add(reader);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
 
     [HttpDelete("{readerId}")]
-    public IActionResult Delete(int readerId)
+    public async Task<IActionResult> Delete(int readerId)
     {
-        var existingReader = _readerService.Get(readerId);
+        var existingReader = await _dataContext.Readers.FindAsync(readerId);
 
         if (existingReader is null)
         {
             return NotFound();
         }
         
-        _readerService.Delete(readerId);
+        _dataContext.Readers.Remove(existingReader);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
 
     [HttpGet]
-    public ActionResult<List<Reader>> GetAll()
+    public async Task<ActionResult<List<Reader>>> GetAll()
     {
-        var readers = _readerService.Get();
+        var readers = await _dataContext.Readers.ToListAsync();
         return Ok(readers);
     }
 
     [HttpGet("{readerId}")]
-    public ActionResult<Reader> Get(int readerId)
+    public async Task<ActionResult<Reader>> Get(int readerId)
     {
-        var reader = _readerService.Get(readerId);
+        var reader = await _dataContext.Readers.FindAsync(readerId);
 
         if (reader is null)
         {
@@ -64,21 +68,22 @@ public class ReaderController: ControllerBase
     }
 
     [HttpPut("{readerId}")]
-    public IActionResult Update(int readerId, [FromBody] Reader reader)
+    public async Task<IActionResult> Update(int readerId, [FromBody] Reader reader)
     {
         if (readerId != reader.ReaderId)
         {
             return BadRequest();
         }
         
-        var oldReader = _readerService.Get(readerId);
+        var oldReader = await _dataContext.Readers.FindAsync(readerId);
 
         if (oldReader is null)
         {
             return NotFound();
         }
         
-        _readerService.Update(reader);
+        _dataContext.Readers.Update(reader);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
     

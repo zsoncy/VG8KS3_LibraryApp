@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using VG8KS3_LibraryApp.Api.DataBase;
 using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
 
@@ -8,53 +10,55 @@ namespace VG8KS3_LibraryApp.Api.Controllers;
 [Route("book")]
 public class BookController: ControllerBase
 {
-    private readonly IBookService _bookService;
+    private readonly DataContext _dataContext;
 
-    public BookController(IBookService bookService)
+    public BookController(DataContext dataContext)
     {
-        _bookService = bookService;
+        _dataContext = dataContext;
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] Book book)
+    public async Task<IActionResult> Add([FromBody] Book book)
     {
-        var existingBook = _bookService.Get(book.BookId);
+        var existingBook = await _dataContext.Books.FindAsync(book.BookId);
 
         if (existingBook is not null)
         {
             return Conflict();
         }
         
-        _bookService.Add(book);
+        _dataContext.Books.Add(book);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
 
     [HttpDelete("{bookId}")]
-    public IActionResult Delete(int BookId)
+    public async Task<IActionResult> Delete(int bookId)
     {
-        var existingBook = _bookService.Get(BookId);
+        var existingBook = await _dataContext.Books.FindAsync(bookId);
 
         if (existingBook is null)
         {
             return NotFound();
         }
         
-        _bookService.Delete(BookId);
+        _dataContext.Books.Remove(existingBook);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
 
     [HttpGet]
-    public ActionResult<List<Book>> GetAll()
+    public async Task<ActionResult<List<Book>>> GetAll()
     {
-        var books = _bookService.Get();
+        var books = await _dataContext.Books.ToListAsync();
         return Ok(books);
     }
 
-    [HttpGet("{BookId}")]
-    public ActionResult<Book> Get(int BookId)
+    [HttpGet("{bookId}")]
+    public async Task<ActionResult<Book>> Get(int bookId)
     {
-        var book = _bookService.Get(BookId);
-        
+        var book = await _dataContext.Books.FindAsync(bookId);
+            
         if (book is null)
         {
             return NotFound();
@@ -63,22 +67,23 @@ public class BookController: ControllerBase
         return Ok(book);
     }
 
-    [HttpPut("{BookId}")]
-    public IActionResult Update(int BookId, [FromBody] Book book)
+    [HttpPut("{bookId}")]
+    public async Task<IActionResult> Update(int bookId, [FromBody] Book book)
     {
-        if (BookId != book.BookId)
+        if (bookId != book.BookId)
         {
             return BadRequest();
         }
         
-        var oldBook = _bookService.Get(BookId);
+        var oldBook = await _dataContext.Books.FindAsync(bookId);
 
         if (oldBook is null)
         {
             return NotFound();
         }
         
-        _bookService.Update(book);
+        _dataContext.Books.Update(oldBook);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
     

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using VG8KS3_LibraryApp.Api.DataBase;
 using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
 
@@ -8,52 +10,54 @@ namespace VG8KS3_LibraryApp.Api.Controllers;
 [Route("borrow")]
 public class BorrowController :ControllerBase
 {
-    private readonly IBorrowService _borrowService;
+    private readonly DataContext _dataContext;
 
-    public BorrowController(IBorrowService borrowService)
+    public BorrowController(DataContext dataContext)
     {
-        _borrowService = borrowService;
+        _dataContext = dataContext;
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] Borrow borrow)
+    public async Task<IActionResult> Add([FromBody] Borrow borrow)
     {
-        var existingBorrow = _borrowService.Get(borrow.BorrowId);
+        var existingBorrow = await _dataContext.Borrows.FindAsync(borrow.BorrowId);
 
         if (existingBorrow is not null)
         {
             return Conflict();
         }
         
-        _borrowService.Add(borrow);
+        _dataContext.Borrows.Add(borrow);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
     
     [HttpDelete("{borrowId}")]
-    public IActionResult Delete(int borrowId)
+    public async Task<IActionResult> Delete(int borrowId)
     {
-        var existingBorrow = _borrowService.Get(borrowId);
-
+        var existingBorrow = await _dataContext.Borrows.FindAsync(borrowId);
+            
         if (existingBorrow is null)
         {
             return NotFound();
         }
         
-        _borrowService.Delete(borrowId);
+        _dataContext.Borrows.Remove(existingBorrow);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
 
     [HttpGet]
-    public ActionResult<List<Borrow>> GetAll()
+    public async Task<ActionResult<List<Borrow>>> GetAll()
     {
-        var existingBorrows = _borrowService.Get();
+        var existingBorrows = await _dataContext.Borrows.ToListAsync();
         return Ok(existingBorrows);
     }
 
     [HttpGet("{borrowId}")]
-    public ActionResult<Borrow> Get(int borrowId)
+    public async Task<ActionResult<Borrow>> Get(int borrowId)
     {
-        var existingBorrow = _borrowService.Get(borrowId);
+        var existingBorrow = await _dataContext.Borrows.FindAsync(borrowId);
 
         if (existingBorrow is null)
         {
@@ -64,21 +68,22 @@ public class BorrowController :ControllerBase
     }
 
     [HttpPut("{borrowId}")]
-    public IActionResult Update(int borrowId, [FromBody] Borrow borrow)
+    public async Task<IActionResult> Update(int borrowId, [FromBody] Borrow borrow)
     {
         if (borrowId != borrow.BorrowId)
         {
             return BadRequest();
         }
         
-        var existingBorrow = _borrowService.Get(borrow.BorrowId);
+        var existingBorrow = await _dataContext.Borrows.FindAsync(borrowId);
         
         if (existingBorrow is null)
         {
             return NotFound();
         }
         
-        _borrowService.Update(borrow);
+        _dataContext.Borrows.Update(existingBorrow);
+        await _dataContext.SaveChangesAsync();
         return Ok();
     }
     

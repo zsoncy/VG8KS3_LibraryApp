@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using VG8KS3_LibraryApp.Api.DataBase;
 using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
 
@@ -6,17 +8,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddSerilog(
-    options => options
-        .MinimumLevel.Debug()
-        .WriteTo.Console());
-
 builder.Services.AddControllers();
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-
-//builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSerilog(
+    options => options
+        .MinimumLevel.Information()
+        .WriteTo.Console());
+
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("SQLite"));
+    options.UseLazyLoadingProxies();
+});
+
 
 builder.Services.AddSingleton<IBookService, BookService>();
 builder.Services.AddSingleton<IReaderService, ReaderService>();

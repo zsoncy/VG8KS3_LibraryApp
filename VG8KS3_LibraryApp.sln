@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VG8KS3_LibraryApp.Api", "VG8KS3_LibraryApp.Api\VG8KS3_LibraryApp.Api.csproj", "{A51F6777-75DE-4DCB-B9A7-941CD058301A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VG8KS3_LibraryApp.Client", "VG8KS3_LibraryApp.Client\VG8KS3_LibraryApp.Client.csproj", "{5CE28B12-3453-449E-8DC5-B201D59DFA2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A51F6777-75DE-4DCB-B9A7-941CD058301A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A51F6777-75DE-4DCB-B9A7-941CD058301A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A51F6777-75DE-4DCB-B9A7-941CD058301A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CE28B12-3453-449E-8DC5-B201D59DFA2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE28B12-3453-449E-8DC5-B201D59DFA2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE28B12-3453-449E-8DC5-B201D59DFA2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE28B12-3453-449E-8DC5-B201D59DFA2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,28 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<style>
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-evenly">
+    <div class="row w-100">
+        
+        <div class="col-4 d-flex flex-column border-end">
+                <a href="/books" class="btn btn-primary btn-outline-light mb-3 w-75">BOOKS</a>
+        </div>
 
-Welcome to your new app.
+        <div class="col-4 d-flex flex-column border-end">
+            <a href="/readers" class="btn btn-primary btn-outline-light mb-3 w-75">READERS</a>
+        </div>
+        
+        <div class="col-4 d-flex flex-column border-end">
+            <a href="/borrows" class="btn btn-primary btn-outline-light mb-3 w-75">BORROWS</a>
+        </div>
+
+    </div>
+</div>

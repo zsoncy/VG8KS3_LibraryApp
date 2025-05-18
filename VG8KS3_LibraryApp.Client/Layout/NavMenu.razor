@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">VG8KS3_LibraryApp.Client</a>
+        <a class="navbar-brand" href="">LIBRARY</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,20 +9,95 @@
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
     <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
+        <div>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    BOOKS
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                    <li>
+                        <NavLink class="dropdown-item" href="/books">
+                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> All books
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/books/add">
+                            <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Add book
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/books/update">
+                            <span class="bi bi-pencil-square me-2" style="line-height: 1; font-size: 1.25rem;"  aria-hidden="true"></span>Update book
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/books/search">
+                            <span class="bi bi-search me-2" style="line-height: 1; font-size: 1.25rem;" aria-hidden="true"></span>Search book
+                        </NavLink>
+                    </li>
+                </ul>
+            </li>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
+        <div>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    READERS
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                    <li>
+                        <NavLink class="dropdown-item" href="/readers">
+                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> All readers
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/readers/add">
+                            <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Add reader
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/readers/update">
+                            <span class="bi bi-pencil-square me-2" style="line-height: 1; font-size: 1.25rem;"  aria-hidden="true"></span>Update reader
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/readers/search">
+                            <span class="bi bi-search me-2" style="line-height: 1; font-size: 1.25rem;" aria-hidden="true"></span>Search reader
+                        </NavLink>
+                    </li>
+                </ul>
+            </li>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
+        <div>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    BORROWS
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+                    <li>
+                        <NavLink class="dropdown-item" href="/borrows">
+                            <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> All borrows
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/borrows/add">
+                            <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span>Add borrow
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/borrows/update">
+                            <span class="bi bi-pencil-square me-2" style="line-height: 1; font-size: 1.25rem;"  aria-hidden="true"></span>Update borrow
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink class="dropdown-item" href="/borrows/search">
+                            <span class="bi bi-search me-2" style="line-height: 1; font-size: 1.25rem;" aria-hidden="true"></span>Search borrow
+                        </NavLink>
+                    </li>
+                </ul>
+            </li>
         </div>
     </nav>
 </div>

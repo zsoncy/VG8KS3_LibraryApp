@@ -28,16 +28,56 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Counter.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Books/AddBook.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va3NcQWRkQm9vay5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Books/AllBooks.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va3NcQWxsQm9va3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Books/GetBook.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va3NcR2V0Qm9vay5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Books/UpdateBook.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va3NcVXBkYXRlQm9vay5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Borrows/AddBorrow.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9ycm93c1xBZGRCb3Jyb3cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Borrows/AllBorrows.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9ycm93c1xBbGxCb3Jyb3dzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Borrows/GetBorrow.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9ycm93c1xHZXRCb3Jyb3cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Borrows/UpdateBorrow.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9ycm93c1xVcGRhdGVCb3Jyb3cucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Weather.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Readers/AddReader.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVhZGVyc1xBZGRSZWFkZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Readers/AllReaders.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVhZGVyc1xBbGxSZWFkZXJzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Readers/GetReader.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVhZGVyc1xHZXRSZWFkZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/Pages/Readers/UpdateReader.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVhZGVyc1xVcGRhdGVSZWFkZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/de ik pti/4.felev/c\#/project/VG8KS3_LibraryApp/VG8KS3_LibraryApp.Client/_Imports.razor]

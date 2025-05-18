@@ -1,0 +1,39 @@
+@page "/books"
+
+
+<style>
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row vh-100">
+        <div class="col-10 bg-light p-4">
+            <h3>All books in the database.</h3>
+        </div>
+        
+        <div class="col-2 d-flex flex-column justify-content-center align-items-center text-white">
+            <a href="/books/add" class="btn btn-primary btn-outline-light mb-3 w-75">
+                <span class="bi bi-plus-square" aria-hidden="true"></span>    Add
+            </a>
+            <a href="/books/update" class="btn btn-primary btn-outline-light mb-3 w-75">
+                <span class="bi bi-pencil-square" aria-hidden="true"></span>  Update
+            </a>
+            <a href="/books/search" class="btn btn-primary btn-outline-light w-75">
+                <span class="bi bi-search" aria-hidden="true"></span>   Search
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+@code {
+    
+}

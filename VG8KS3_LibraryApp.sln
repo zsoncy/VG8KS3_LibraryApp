@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VG8KS3_LibraryApp.Api", "VG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VG8KS3_LibraryApp.Client", "VG8KS3_LibraryApp.Client\VG8KS3_LibraryApp.Client.csproj", "{5CE28B12-3453-449E-8DC5-B201D59DFA2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VG8KS3_LibraryApp.Shared", "VG8KS3_LibraryApp.Shared\VG8KS3_LibraryApp.Shared.csproj", "{6424C4B5-E33E-46B5-991D-DE3497A02782}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{5CE28B12-3453-449E-8DC5-B201D59DFA2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CE28B12-3453-449E-8DC5-B201D59DFA2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CE28B12-3453-449E-8DC5-B201D59DFA2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6424C4B5-E33E-46B5-991D-DE3497A02782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6424C4B5-E33E-46B5-991D-DE3497A02782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6424C4B5-E33E-46B5-991D-DE3497A02782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6424C4B5-E33E-46B5-991D-DE3497A02782}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

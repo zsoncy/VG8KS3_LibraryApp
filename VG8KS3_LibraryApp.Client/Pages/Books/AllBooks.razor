@@ -1,4 +1,8 @@
 @page "/books"
+@using VG8KS3_LibraryApp.Shared.Models
+@inject HttpClient Http
+
+<PageTitle>Books</PageTitle>
 
 
 <style>
@@ -9,23 +13,59 @@
         color: white !important;
     }
 </style>
+
 <div class="container-fluid">
     <div class="row vh-100">
+        
         <div class="col-10 bg-light p-4">
             <h3>All books in the database.</h3>
+            @if (books == null)
+            {
+                <p>The database is empty...</p>
+            }
+            else
+            {
+                <table class="table table-bordered table-striped" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Publisher</th>
+                        <th>Release Year</th>
+                        <th>Update</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var b in books)
+                    {
+                        <tr>
+                            <td>@b.BookId</td>
+                            <td>@b.Title</td>
+                            <td>@b.Author</td>
+                            <td>@b.Publisher</td>
+                            <td>@b.ReleaseDate</td>
+                            <td class="text-center">
+                                <a href="/books/update" class="btn btn-primary btn-outline-light align-content-center">
+                                    <span class="bi bi-pencil-square" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
         </div>
-        
+
         <div class="col-2 d-flex flex-column justify-content-center align-items-center text-white">
             <a href="/books/add" class="btn btn-primary btn-outline-light mb-3 w-75">
-                <span class="bi bi-plus-square" aria-hidden="true"></span>    Add
-            </a>
-            <a href="/books/update" class="btn btn-primary btn-outline-light mb-3 w-75">
-                <span class="bi bi-pencil-square" aria-hidden="true"></span>  Update
+                <span class="bi bi-plus-square" aria-hidden="true"></span> Add
             </a>
             <a href="/books/search" class="btn btn-primary btn-outline-light w-75">
-                <span class="bi bi-search" aria-hidden="true"></span>   Search
+                <span class="bi bi-search" aria-hidden="true"></span> Search
             </a>
         </div>
+
     </div>
 </div>
 
@@ -35,5 +75,10 @@
 
 
 @code {
-    
+    private List<BookDto>? books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        books = await Http.GetFromJsonAsync<List<BookDto>>("api/Book");
+    }
 }

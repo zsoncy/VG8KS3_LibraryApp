@@ -8,7 +8,7 @@ using VG8KS3_LibraryApp.Shared.Models;
 namespace VG8KS3_LibraryApp.Api.Controllers;
 
 [ApiController]
-[Route("reader")]
+[Route("api/[controller]")]
 public class ReaderController: ControllerBase
 {
     private readonly DataContext _dataContext;
@@ -30,7 +30,7 @@ public class ReaderController: ControllerBase
         
         var reader = new Reader()
         {
-            ReaderId = readerDto.ReaderId,
+            Name = readerDto.Name,
             Adress = readerDto.Adress, 
             DateOfBirth = readerDto.DateOfBirth,
         };

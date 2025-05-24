@@ -8,7 +8,7 @@ using VG8KS3_LibraryApp.Shared.Models;
 namespace VG8KS3_LibraryApp.Api.Controllers;
 
 [ApiController]
-[Route("book")]
+[Route("api/[controller]")]
 public class BookController: ControllerBase
 {
     private readonly DataContext _dataContext;

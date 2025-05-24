@@ -8,6 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("https://localhost:7043")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
@@ -43,6 +53,11 @@ app.UseHttpsRedirection();
 app.MapGet("/", () => Results.Redirect("/swagger"));
 //app.UseAuthorization();
 
+app.UseCors();
+
+app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
+

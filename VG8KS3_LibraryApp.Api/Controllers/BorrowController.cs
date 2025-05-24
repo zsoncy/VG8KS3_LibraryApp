@@ -8,7 +8,7 @@ using VG8KS3_LibraryApp.Shared.Models;
 namespace VG8KS3_LibraryApp.Api.Controllers;
 
 [ApiController]
-[Route("borrow")]
+[Route("api/[controller]")]
 public class BorrowController :ControllerBase
 {
     private readonly DataContext _dataContext;
@@ -30,7 +30,7 @@ public class BorrowController :ControllerBase
         
         var borrow = new Borrow()
         {
-            BorrowId = borrowDto.BorrowId,
+            BookId = borrowDto.BookId,
             ReaderId = borrowDto.ReaderId,
             DateOfBorrow = borrowDto.DateOfBorrow,
             DateOfReturn = borrowDto.DateOfReturn

@@ -1,4 +1,9 @@
 @page "/borrows"
+@using VG8KS3_LibraryApp.Shared.Models
+
+@inject HttpClient Http
+
+<PageTitle>Borrows</PageTitle>
 
 
 <style>
@@ -11,26 +16,67 @@
 </style>
 <div class="container-fluid">
     <div class="row vh-100">
+        
         <div class="col-10 bg-light p-4">
             <h3>All borrows in the database.</h3>
+            @if (borrows == null)
+            {
+                <p>The database is empty...</p>
+            }
+            else
+            {
+                <table class="table table-bordered table-striped" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Reader ID</th>
+                        <th>Book ID</th>
+                        <th>Date of borrow</th>
+                        <th>Date of return</th>
+                        <th>Update</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var b in borrows)
+                    {
+                        <tr>
+                            <td>@b.BorrowId</td>
+                            <td>@b.ReaderId</td>
+                            <td>@b.BookId</td>
+                            <td>@b.DateOfBorrow</td>
+                            <td>@b.DateOfReturn</td>
+                            <td class="text-center">
+                                <a href="/borrows/update" class="btn btn-primary btn-outline-light align-content-center">
+                                    <span class="bi bi-pencil-square" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
         </div>
 
         <div class="col-2 d-flex flex-column justify-content-center align-items-center text-white">
             <a href="/borrows/add" class="btn btn-primary btn-outline-light mb-3 w-75">
-                <span class="bi bi-plus-square" aria-hidden="true"></span>    Add
-            </a>
-            <a href="/borrows/update" class="btn btn-primary btn-outline-light mb-3 w-75">
-                <span class="bi bi-pencil-square" aria-hidden="true"></span>  Update
+                <span class="bi bi-plus-square" aria-hidden="true"></span> Add
             </a>
             <a href="/borrows/search" class="btn btn-primary btn-outline-light w-75">
-                <span class="bi bi-search" aria-hidden="true"></span>   Search
+                <span class="bi bi-search" aria-hidden="true"></span> Search
             </a>
         </div>
+        
     </div>
 </div>
 
 
 
+
 @code {
-    
+    private List<BorrowDto>? borrows;
+
+    protected override async Task OnInitializedAsync()
+    {
+        borrows = await Http.GetFromJsonAsync<List<BorrowDto>>("api/Borrow");
+    }
 }

@@ -19,14 +19,23 @@ public class BorrowController :ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] BorrowDto borrow)
+    public async Task<IActionResult> Add([FromBody] BorrowDto borrowDto)
     {
-        var existingBorrow = await _dataContext.Borrows.FindAsync(borrow.BorrowId);
+        var existingBorrow = await _dataContext.Borrows.FindAsync(borrowDto.BorrowId);
 
         if (existingBorrow is not null)
         {
             return Conflict();
         }
+        
+        var borrow = new Borrow()
+        {
+            BorrowId = borrowDto.BorrowId,
+            ReaderId = borrowDto.ReaderId,
+            DateOfBorrow = borrowDto.DateOfBorrow,
+            DateOfReturn = borrowDto.DateOfReturn
+        };
+        
         
         _dataContext.Borrows.Add(borrow);
         await _dataContext.SaveChangesAsync();
@@ -69,9 +78,9 @@ public class BorrowController :ControllerBase
     }
 
     [HttpPut("{borrowId}")]
-    public async Task<IActionResult> Update(int borrowId, [FromBody] BorrowDto borrow)
+    public async Task<IActionResult> Update(int borrowId, [FromBody] BorrowDto borrowDto)
     {
-        if (borrowId != borrow.BorrowId)
+        if (borrowId != borrowDto.BorrowId)
         {
             return BadRequest();
         }

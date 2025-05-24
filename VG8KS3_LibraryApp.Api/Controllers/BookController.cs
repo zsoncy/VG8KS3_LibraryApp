@@ -19,14 +19,22 @@ public class BookController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] BookDto book)
+    public async Task<IActionResult> Add([FromBody] BookDto bookDto)
     {
-        var existingBook = await _dataContext.Books.FindAsync(book.BookId);
+        var existingBook = await _dataContext.Books.FindAsync(bookDto.BookId);
 
         if (existingBook is not null)
         {
             return Conflict();
         }
+        
+        var book = new Book
+        {
+            Title = bookDto.Title,
+            Author = bookDto.Author,
+            Publisher = bookDto.Publisher,
+            ReleaseDate = bookDto.ReleaseDate
+        };
         
         _dataContext.Books.Add(book);
         await _dataContext.SaveChangesAsync();
@@ -69,9 +77,9 @@ public class BookController: ControllerBase
     }
 
     [HttpPut("{bookId}")]
-    public async Task<IActionResult> Update(int bookId, [FromBody] BookDto book)
+    public async Task<IActionResult> Update(int bookId, [FromBody] BookDto bookDto)
     {
-        if (bookId != book.BookId)
+        if (bookId != bookDto.BookId)
         {
             return BadRequest();
         }

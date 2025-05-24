@@ -168,3 +168,5 @@ D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debu
 D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
 D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
 D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\VG8KS3_LibraryApp.Shared.dll
+D:\de ik pti\4.felev\c#\project\VG8KS3_LibraryApp\VG8KS3_LibraryApp.Api\bin\Debug\net9.0\VG8KS3_LibraryApp.Shared.pdb

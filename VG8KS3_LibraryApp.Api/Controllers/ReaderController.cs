@@ -19,14 +19,21 @@ public class ReaderController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] ReaderDto reader)
+    public async Task<IActionResult> Add([FromBody] ReaderDto readerDto)
     {
-        var existingReader = await _dataContext.Readers.FindAsync(reader.ReaderId);
+        var existingReader = await _dataContext.Readers.FindAsync(readerDto.ReaderId);
 
         if (existingReader is not null)
         {
             return Conflict();
         }
+        
+        var reader = new Reader()
+        {
+            ReaderId = readerDto.ReaderId,
+            Adress = readerDto.Adress, 
+            DateOfBirth = readerDto.DateOfBirth,
+        };
         
         _dataContext.Readers.Add(reader);
         await _dataContext.SaveChangesAsync();
@@ -69,9 +76,9 @@ public class ReaderController: ControllerBase
     }
 
     [HttpPut("{readerId}")]
-    public async Task<IActionResult> Update(int readerId, [FromBody] ReaderDto reader)
+    public async Task<IActionResult> Update(int readerId, [FromBody] ReaderDto readerDto)
     {
-        if (readerId != reader.ReaderId)
+        if (readerId != readerDto.ReaderId)
         {
             return BadRequest();
         }
@@ -83,7 +90,7 @@ public class ReaderController: ControllerBase
             return NotFound();
         }
         
-        _dataContext.Readers.Update(reader);
+        _dataContext.Readers.Update(oldReader);
         await _dataContext.SaveChangesAsync();
         return Ok();
     }

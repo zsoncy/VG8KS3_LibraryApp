@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VG8KS3_LibraryApp.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82d84334767f2d316ac2f5fdd36a01960a051cd3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8bf171eef551925baa79a979f2907e9f16c9473f")]
 [assembly: System.Reflection.AssemblyProductAttribute("VG8KS3_LibraryApp.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VG8KS3_LibraryApp.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

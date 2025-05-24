@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using VG8KS3_LibraryApp.Api.DataBase;
 using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
+using VG8KS3_LibraryApp.Shared.Models;
 
 namespace VG8KS3_LibraryApp.Api.Controllers;
 
@@ -18,7 +19,7 @@ public class BorrowController :ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] Borrow borrow)
+    public async Task<IActionResult> Add([FromBody] BorrowDto borrow)
     {
         var existingBorrow = await _dataContext.Borrows.FindAsync(borrow.BorrowId);
 
@@ -48,14 +49,14 @@ public class BorrowController :ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Borrow>>> GetAll()
+    public async Task<ActionResult<List<BorrowDto>>> GetAll()
     {
         var existingBorrows = await _dataContext.Borrows.ToListAsync();
         return Ok(existingBorrows);
     }
 
     [HttpGet("{borrowId}")]
-    public async Task<ActionResult<Borrow>> Get(int borrowId)
+    public async Task<ActionResult<BorrowDto>> Get(int borrowId)
     {
         var existingBorrow = await _dataContext.Borrows.FindAsync(borrowId);
 
@@ -68,7 +69,7 @@ public class BorrowController :ControllerBase
     }
 
     [HttpPut("{borrowId}")]
-    public async Task<IActionResult> Update(int borrowId, [FromBody] Borrow borrow)
+    public async Task<IActionResult> Update(int borrowId, [FromBody] BorrowDto borrow)
     {
         if (borrowId != borrow.BorrowId)
         {

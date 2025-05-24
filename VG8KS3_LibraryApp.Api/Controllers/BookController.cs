@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using VG8KS3_LibraryApp.Api.DataBase;
 using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
+using VG8KS3_LibraryApp.Shared.Models;
 
 namespace VG8KS3_LibraryApp.Api.Controllers;
 
@@ -18,7 +19,7 @@ public class BookController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] Book book)
+    public async Task<IActionResult> Add([FromBody] BookDto book)
     {
         var existingBook = await _dataContext.Books.FindAsync(book.BookId);
 
@@ -48,14 +49,14 @@ public class BookController: ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Book>>> GetAll()
+    public async Task<ActionResult<List<BookDto>>> GetAll()
     {
         var books = await _dataContext.Books.ToListAsync();
         return Ok(books);
     }
 
     [HttpGet("{bookId}")]
-    public async Task<ActionResult<Book>> Get(int bookId)
+    public async Task<ActionResult<BookDto>> Get(int bookId)
     {
         var book = await _dataContext.Books.FindAsync(bookId);
             
@@ -68,7 +69,7 @@ public class BookController: ControllerBase
     }
 
     [HttpPut("{bookId}")]
-    public async Task<IActionResult> Update(int bookId, [FromBody] Book book)
+    public async Task<IActionResult> Update(int bookId, [FromBody] BookDto book)
     {
         if (bookId != book.BookId)
         {

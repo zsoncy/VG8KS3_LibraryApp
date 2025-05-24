@@ -1487,6 +1487,16 @@
         "build": {
           "buildTransitive/net6.0/_._": {}
         }
+      },
+      "VG8KS3_LibraryApp.Shared/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/VG8KS3_LibraryApp.Shared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/VG8KS3_LibraryApp.Shared.dll": {}
+        }
       }
     }
   },
@@ -4218,6 +4228,11 @@
         "system.threading.channels.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "VG8KS3_LibraryApp.Shared/1.0.0": {
+      "type": "project",
+      "path": "../VG8KS3_LibraryApp.Shared/VG8KS3_LibraryApp.Shared.csproj",
+      "msbuildProject": "../VG8KS3_LibraryApp.Shared/VG8KS3_LibraryApp.Shared.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4228,7 +4243,8 @@
       "Microsoft.EntityFrameworkCore.Proxies >= 9.0.5",
       "Microsoft.EntityFrameworkCore.Sqlite >= 9.0.5",
       "Serilog.AspNetCore >= 9.0.0",
-      "Swashbuckle.AspNetCore >= 8.1.1"
+      "Swashbuckle.AspNetCore >= 8.1.1",
+      "VG8KS3_LibraryApp.Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -4262,7 +4278,11 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\de ik pti\\4.felev\\c#\\project\\VG8KS3_LibraryApp\\VG8KS3_LibraryApp.Shared\\VG8KS3_LibraryApp.Shared.csproj": {
+              "projectPath": "D:\\de ik pti\\4.felev\\c#\\project\\VG8KS3_LibraryApp\\VG8KS3_LibraryApp.Shared\\VG8KS3_LibraryApp.Shared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

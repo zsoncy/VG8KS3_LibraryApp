@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using VG8KS3_LibraryApp.Api.DataBase;
 using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
+using VG8KS3_LibraryApp.Shared.Models;
 
 namespace VG8KS3_LibraryApp.Api.Controllers;
 
@@ -18,7 +19,7 @@ public class ReaderController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] Reader reader)
+    public async Task<IActionResult> Add([FromBody] ReaderDto reader)
     {
         var existingReader = await _dataContext.Readers.FindAsync(reader.ReaderId);
 
@@ -48,14 +49,14 @@ public class ReaderController: ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<Reader>>> GetAll()
+    public async Task<ActionResult<List<ReaderDto>>> GetAll()
     {
         var readers = await _dataContext.Readers.ToListAsync();
         return Ok(readers);
     }
 
     [HttpGet("{readerId}")]
-    public async Task<ActionResult<Reader>> Get(int readerId)
+    public async Task<ActionResult<ReaderDto>> Get(int readerId)
     {
         var reader = await _dataContext.Readers.FindAsync(readerId);
 
@@ -68,7 +69,7 @@ public class ReaderController: ControllerBase
     }
 
     [HttpPut("{readerId}")]
-    public async Task<IActionResult> Update(int readerId, [FromBody] Reader reader)
+    public async Task<IActionResult> Update(int readerId, [FromBody] ReaderDto reader)
     {
         if (readerId != reader.ReaderId)
         {

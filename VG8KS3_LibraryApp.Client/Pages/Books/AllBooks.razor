@@ -34,6 +34,7 @@
                         <th>Publisher</th>
                         <th>Release Year</th>
                         <th>Update</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,11 @@
                                 <a href="/books/update" class="btn btn-primary btn-outline-light align-content-center">
                                     <span class="bi bi-pencil-square" aria-hidden="true"></span>
                                 </a>
+                            </td>
+                            <td class="text-center d-flex flex-column justify-content-center align-items-center">
+                                <button type="submit" class="btn btn-primary btn-outline-light align-content-center" @onclick="() => HandleDeleteBook(b.BookId)">
+                                    <span class="bi bi-trash-fill" aria-hidden="true"></span>
+                                </button>
                             </td>
                         </tr>
                     }
@@ -110,6 +116,18 @@
 
     }
 
-
+    private async Task HandleDeleteBook(int bookToDeleteId)
+    {
+        var response = await Http.DeleteAsync($"api/Book/{bookToDeleteId}");
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Book deleted successfully.");
+            await LoadBooksAsync();
+        }
+        else
+        {
+            Console.WriteLine("Failed to delete the book.");
+        }
+    }
 
 }

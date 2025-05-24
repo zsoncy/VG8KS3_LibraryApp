@@ -58,9 +58,15 @@
         </div>
 
         <div class="col-2 d-flex flex-column justify-content-center align-items-center text-white">
-            <a href="/books/add" class="btn btn-primary btn-outline-light mb-3 w-75">
-                <span class="bi bi-plus-square" aria-hidden="true"></span> Add
-            </a>
+            <EditForm Model="@bookToAdd" OnValidSubmit="@HandleAddBook" class=" d-flex flex-column justify-content-center align-items-center">
+                <InputText @bind-Value="bookToAdd.Title" placeholder="Title" class="form-control mb-2" />
+                <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2" />
+                <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2" />
+                <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2" />
+                <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
+                    <span class="bi bi-plus-square" aria-hidden="true"></span> Add
+                </button>
+            </EditForm>
             <a href="/books/search" class="btn btn-primary btn-outline-light w-75">
                 <span class="bi bi-search" aria-hidden="true"></span> Search
             </a>
@@ -77,8 +83,33 @@
 @code {
     private List<BookDto>? books;
 
-    protected override async Task OnInitializedAsync()
+    private async Task LoadBooksAsync()
     {
         books = await Http.GetFromJsonAsync<List<BookDto>>("api/Book");
     }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBooksAsync();
+    }
+    
+    private BookDto bookToAdd = new BookDto();
+    private async Task HandleAddBook()
+    {
+        var response = await Http.PostAsJsonAsync($"api/Book", bookToAdd);
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Book added successfully.");
+            bookToAdd = new BookDto();
+            await LoadBooksAsync();
+        }
+        else
+        {
+            Console.WriteLine("Failed to add the book.");
+        }
+
+    }
+
+
+
 }

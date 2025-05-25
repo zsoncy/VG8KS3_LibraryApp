@@ -1,9 +1,130 @@
-@page "/readers/search"
-<h3>Search for a reader by ID.</h3>
+@page "/readers/search/"
+@page "/readers/search/{query}"
+@using VG8KS3_LibraryApp.Shared.Models
+@inject HttpClient Http
+
+
+<style>
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
 
 <PageTitle>Search reader</PageTitle>
+
+<h3 class="mb-5 mt-5">Search results for "@query"</h3>
+
+<div class="col-12 d-flex flex-column justify-content-around align-items-center text-white">
+
+    <EditForm Model="@readerSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex w-100 mt-4 gap-4">
+
+        <InputText @bind-Value="readerSearch.Query" placeholder="Search by name..." class="form-control mb-2 "/>
+
+        <button type="submit" class="btn btn-primary btn-outline-light" style=" height: 40px; width: 300px;">
+            <span class="bi bi-search" aria-hidden="true"></span> Search
+        </button>
+
+    </EditForm>
+
+</div>
+
+@if (readers == null)
+{
+    <p>Loading...</p>
+}
+else if (readers.Count == 0)
+{
+    <p>No readers found.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Date of birth</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var reader in readers)
+        {
+            <tr>
+                <td>@reader.Name</td>
+                <td>@reader.Adress</td>
+                <td>@($"{reader.DateOfBirth.Year}. {reader.DateOfBirth.Month}. {reader.DateOfBirth.Day}")</td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+}
+
+<div class="col-12 d-flex flex-column justify-content-around align-items-center text-white mt-5 mb-5">
+
+    <a href="/readers" class="btn btn-primary btn-outline-light mt-5 mb-5" style=" width: 500px;  font-size: 20px;">Cancel</a>
+
+</div>
 
 
 @code {
     
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Parameter] public string query { get; set; } = string.Empty;
+
+    private List<ReaderDto>? readers;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadContentAsync();
+    }
+
+    private async Task LoadContentAsync()
+    {
+        string url;
+
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            url = "api/Reader/";
+        }
+        else
+        {
+            var encodedQuery = Uri.EscapeDataString(query);
+            url = $"api/Reader/search?name={encodedQuery}";
+        }
+
+        var response = await Http.GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            readers = await response.Content.ReadFromJsonAsync<List<ReaderDto>>();
+        }
+        else
+        {
+            readers = new();
+        }
+    }
+
+    private class ReaderSearch
+    {
+        public string Query { get; set; } = string.Empty;
+    }
+
+    private ReaderSearch readerSearch = new ReaderSearch();
+
+    private void NavigateToSearchPage()
+    {
+        if (!string.IsNullOrWhiteSpace(readerSearch.Query))
+        {
+            var encodedQuery = Uri.EscapeDataString(readerSearch.Query);
+            Navigation.NavigateTo($"/readers/search/{encodedQuery}");
+        }
+    }
+
 }

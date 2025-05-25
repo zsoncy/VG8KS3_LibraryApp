@@ -62,6 +62,23 @@ public class ReaderController: ControllerBase
         return Ok(readers);
     }
 
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<ReaderDto>>> SearchReadersByName([FromQuery] string name)
+    {
+        var matchedReaders = await _dataContext.Readers
+            .Where(r => r.Name.ToLower().Contains(name.ToLower()))
+            .Select(r => new ReaderDto()
+            {
+                ReaderId = r.ReaderId,
+                Name = r.Name,
+                Adress = r.Adress,
+                DateOfBirth = r.DateOfBirth
+            })
+            .ToListAsync();
+
+        return Ok(matchedReaders);
+    }
+
     [HttpGet("{readerId}")]
     public async Task<ActionResult<ReaderDto>> Get(int readerId)
     {
@@ -72,7 +89,15 @@ public class ReaderController: ControllerBase
             return NotFound();
         }   
         
-        return Ok(reader);
+        var readerDto = new ReaderDto()
+        {
+            ReaderId = reader.ReaderId,
+            Name = reader.Name,
+            Adress = reader.Adress,
+            DateOfBirth = reader.DateOfBirth
+        };
+
+        return Ok(readerDto);
     }
 
     [HttpPut("{readerId}")]
@@ -80,17 +105,20 @@ public class ReaderController: ControllerBase
     {
         if (readerId != readerDto.ReaderId)
         {
-            return BadRequest();
+            return BadRequest("Mismatched reader ID.");
         }
         
-        var oldReader = await _dataContext.Readers.FindAsync(readerId);
+        var existingReader = await _dataContext.Readers.FindAsync(readerId);
 
-        if (oldReader is null)
+        if (existingReader is null)
         {
             return NotFound();
         }
         
-        _dataContext.Readers.Update(oldReader);
+        existingReader.Name = readerDto.Name;
+        existingReader.Adress = readerDto.Adress;
+        existingReader.DateOfBirth = readerDto.DateOfBirth;
+        
         await _dataContext.SaveChangesAsync();
         return Ok();
     }

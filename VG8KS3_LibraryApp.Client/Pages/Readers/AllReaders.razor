@@ -1,9 +1,7 @@
 @page "/readers"
 @using VG8KS3_LibraryApp.Shared.Models
-
 @inject HttpClient Http
 
-<PageTitle>Readers</PageTitle>
 
 
 <style>
@@ -14,11 +12,17 @@
         color: white !important;
     }
 </style>
+
+<PageTitle>Readers</PageTitle>
+
 <div class="container-fluid">
+    
     <div class="row vh-100">
-        
+
         <div class="col-10 bg-light p-4">
-            <h3>All readers in the database.</h3>
+            
+            <h3 class="mb-5 mt-5">All readers in the database.</h3>
+            
             @if (readers == null)
             {
                 <p>Loading...</p>
@@ -26,15 +30,18 @@
             else
             {
                 <table class="table table-bordered table-striped" style="width: 100%;">
+                    
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Address</th>
                         <th>Date of birth</th>
-                        <th>Update</th>
+                        <th class="text-center align-middle">Update</th>
+                        <th class="text-center align-middle">Delete</th>
                     </tr>
                     </thead>
+                    
                     <tbody>
                     @foreach (var r in readers)
                     {
@@ -42,31 +49,58 @@
                             <td>@r.ReaderId</td>
                             <td>@r.Name</td>
                             <td>@r.Adress</td>
-                            <td>
-                                @($"{r.DateOfBirth.Year} / {r.DateOfBirth.Month} / {r.DateOfBirth.Day}")
-                            </td>
+                            <td>@($"{r.DateOfBirth.Year}. {r.DateOfBirth.Month}. {r.DateOfBirth.Day}")</td>
                             <td class="text-center">
-                                <a href="/readers/update" class="btn btn-primary btn-outline-light align-content-center">
+                                <button type="submit" class="btn btn-primary btn-outline-light align-content-center" @onclick="() => NavigateToUpdatePage(r.ReaderId)">
                                     <span class="bi bi-pencil-square" aria-hidden="true"></span>
-                                </a>
+                                </button>
+                            </td>
+                            <td class="text-center d-flex flex-column justify-content-center align-items-center">
+                                <button type="submit" class="btn btn-primary btn-outline-light align-content-center" @onclick="() => HandleDeleteReader(r.ReaderId)">
+                                    <span class="bi bi-trash-fill" aria-hidden="true"></span>
+                                </button>
                             </td>
                         </tr>
                     }
                     </tbody>
+                    
                 </table>
             }
+            
         </div>
+        
+        <div class="col-2 d-flex h-50">
+            
+            <div class=" flex-column d-flex justify-content-around align-items-center text-white">
 
-        <div class="col-2 d-flex flex-column justify-content-center align-items-center text-white">
-            <a href="/readers/add" class="btn btn-primary btn-outline-light mb-3 w-75">
-                <span class="bi bi-plus-square" aria-hidden="true"></span> Add
-            </a>
-            <a href="/readers/search" class="btn btn-primary btn-outline-light w-75">
-                <span class="bi bi-search" aria-hidden="true"></span> Search
-            </a>
+                <EditForm Model="@readerSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
+
+                    <InputText @bind-Value="readerSearch.Query" placeholder="Search by name..." class="form-control mb-2"/>
+
+                    <button type="submit" class="btn btn-primary btn-outline-light w-75">
+                        <span class="bi bi-search" aria-hidden="true"></span> Search
+                    </button>
+
+                </EditForm>
+
+                <EditForm Model="@readerToAdd" OnValidSubmit="@HandleAddReader" class=" d-flex flex-column justify-content-center align-items-center">
+
+                    <InputText @bind-Value="readerToAdd.Name" placeholder="Name" class="form-control mb-2"/>
+                    <InputText @bind-Value="readerToAdd.Adress" placeholder="Address" class="form-control mb-2"/>
+                    <InputDate @bind-Value="readerToAdd.DateOfBirth" class="form-control mb-2"/>
+
+                    <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
+                        <span class="bi bi-plus-square" aria-hidden="true"></span> Add
+                    </button>
+
+                </EditForm>
+
+            </div>
+            
         </div>
-
+        
     </div>
+    
 </div>
 
 
@@ -76,10 +110,74 @@
 
 
 @code {
+    
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    
     private List<ReaderDto>? readers;
 
+    
+    private ReaderDto readerToAdd = new ReaderDto();
+
+    
     protected override async Task OnInitializedAsync()
+    {
+        await LoadReadersAsync();
+    }
+    
+    private async Task LoadReadersAsync()
     {
         readers = await Http.GetFromJsonAsync<List<ReaderDto>>("api/Reader");
     }
+    
+    private async Task HandleAddReader()
+    {
+        var response = await Http.PostAsJsonAsync($"api/Reader", readerToAdd);
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Book added successfully.");
+            readerToAdd = new ReaderDto();
+            await LoadReadersAsync();
+        }
+        else
+        {
+            Console.WriteLine("Failed to add the book.");
+        }
+
+    }
+    
+    private async Task HandleDeleteReader(int readerToDeleteId)
+    {
+        var response = await Http.DeleteAsync($"api/Reader/{readerToDeleteId}");
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Book deleted successfully.");
+            await LoadReadersAsync();
+        }
+        else
+        {
+            Console.WriteLine("Failed to delete the book.");
+        }
+    }
+    
+    private class ReaderSearch
+    {
+        public string Query { get; set; } = string.Empty;
+    }
+    
+    private ReaderSearch readerSearch = new ReaderSearch();
+    
+    private void NavigateToSearchPage()
+    {
+        if (!string.IsNullOrWhiteSpace(readerSearch.Query))
+        {
+            var encodedQuery = Uri.EscapeDataString(readerSearch.Query);
+            Navigation.NavigateTo($"/readers/search/{encodedQuery}");
+        }
+    }
+    
+    private void NavigateToUpdatePage(int readerToUpdateId)
+    {
+        Navigation.NavigateTo($"/readers/update/{readerToUpdateId}");
+    }
+    
 }

@@ -1,9 +1,81 @@
 @page "/readers/add"
-<h3>Add a reader.</h3>
+@using VG8KS3_LibraryApp.Shared.Models
+@inject HttpClient Http
+
+
+
+<style>
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
 
 <PageTitle>Add reader</PageTitle>
 
+<h3 class="mb-5 mt-5">Add a new reader to the database.</h3>
+
+<EditForm Model="@readerToAdd" OnValidSubmit="@HandleAddReader" class=" d-flex flex-column justify-content-center align-items-center">
+    <table class="table table-striped table-bordered mt-5 mb-5">
+
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Date of birth</th>
+            <th>Publish</th>
+        </tr>
+        </thead>
+        
+        <tbody>
+        <tr>
+            <td>
+                <InputText @bind-Value="readerToAdd.Name" placeholder="Name" class="form-control mb-2"/>
+            </td>
+            <td>
+                <InputText @bind-Value="readerToAdd.Adress" placeholder="Address" class="form-control mb-2"/>
+            </td>
+            <td>
+                <InputDate @bind-Value="readerToAdd.DateOfBirth" class="form-control mb-2"/>
+            </td>
+            <td>
+                <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
+                    <span class="bi bi-plus-square" aria-hidden="true"></span> Add
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    
+    </table>
+</EditForm>
+
+<div class="col-12 d-flex flex-column justify-content-around align-items-center text-white mt-5 mb-5">
+
+    <a href="/readers" class="btn btn-primary btn-outline-light mt-5 mb-5" style=" width: 500px;  font-size: 20px;">Cancel</a>
+
+</div>
+
 
 @code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
     
+    private ReaderDto readerToAdd = new ReaderDto();
+    
+    private async Task HandleAddReader()
+    {
+        var response = await Http.PostAsJsonAsync($"api/Reader", readerToAdd);
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Reader added successfully.");
+            readerToAdd = new ReaderDto();
+            Navigation.NavigateTo("/readers");
+        }
+        else
+        {
+            Console.WriteLine("Failed to add the book.");
+        }
+
+    }
 }

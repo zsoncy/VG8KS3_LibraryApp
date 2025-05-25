@@ -38,8 +38,8 @@
                         <th>Author</th>
                         <th>Publisher</th>
                         <th>Release Year</th>
-                        <th>Update</th>
-                        <th>Delete</th>
+                        <th class="text-center align-middle">Update</th>
+                        <th class="text-center align-middle">Delete</th>
                     </tr>
                     </thead>
                     
@@ -70,31 +70,35 @@
             }
             
         </div>
-        
-        <div class="col-2 d-flex flex-column justify-content-around align-items-center text-white">
-            
-            <EditForm Model="@bookSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
+
+        <div class="col-2 d-flex h-50">
+
+            <div class=" flex-column d-flex justify-content-around align-items-center text-white">            
+           
+                <EditForm Model="@bookSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
+                    
+                    <InputText @bind-Value="bookSearch.Query" placeholder="Search by title..." class="form-control mb-2"/>
+                    
+                    <button type="submit" class="btn btn-primary btn-outline-light w-75">
+                        <span class="bi bi-search" aria-hidden="true"></span> Search
+                    </button>
+                    
+                </EditForm>
                 
-                <InputText @bind-Value="bookSearch.Query" placeholder="Search by title..." class="form-control mb-2"/>
+                <EditForm Model="@bookToAdd" OnValidSubmit="@HandleAddBook" class=" d-flex flex-column justify-content-center align-items-center">
+                    
+                    <InputText @bind-Value="bookToAdd.Title" placeholder="Title" class="form-control mb-2"/>
+                    <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2"/>
+                    <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2"/>
+                    <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2"/>
+                    
+                    <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
+                        <span class="bi bi-plus-square" aria-hidden="true"></span> Add
+                    </button>
+                    
+                </EditForm>
                 
-                <button type="submit" class="btn btn-primary btn-outline-light w-75">
-                    <span class="bi bi-search" aria-hidden="true"></span> Search
-                </button>
-                
-            </EditForm>
-            
-            <EditForm Model="@bookToAdd" OnValidSubmit="@HandleAddBook" class=" d-flex flex-column justify-content-center align-items-center">
-                
-                <InputText @bind-Value="bookToAdd.Title" placeholder="Title" class="form-control mb-2"/>
-                <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2"/>
-                <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2"/>
-                <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2"/>
-                
-                <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
-                    <span class="bi bi-plus-square" aria-hidden="true"></span> Add
-                </button>
-                
-            </EditForm>
+            </div>
             
         </div>
 

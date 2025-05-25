@@ -5,7 +5,6 @@
 
 
 
-
 <style>
     .btn-primary:hover,
     .btn-primary:focus {
@@ -37,7 +36,7 @@ else
                 <th>Author</th>
                 <th>Publisher</th>
                 <th>Release Year</th>
-                <th>Publish</th>
+                <th class="text-center align-middle">Publish</th>
             </tr>
             </thead>
             
@@ -53,8 +52,9 @@ else
                     <InputText @bind-Value="@bookToUpdate.Publisher" placeholder=@bookToUpdate.Publisher class="form-control mb-2"/>
                 </td>
                 <td>
-                    <InputNumber @bind-Value="@bookToUpdate.ReleaseDate" placeholder=@bookToUpdate.ReleaseDate class="form-control mb-2"/></td>
-                <td>
+                    <InputNumber @bind-Value="@bookToUpdate.ReleaseDate" placeholder=@bookToUpdate.ReleaseDate class="form-control mb-2"/>
+                </td>
+                <td class="text-center align-middle">
                     <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
                         <span class="bi bi-plus-square" aria-hidden="true"></span> Update
                     </button>
@@ -69,7 +69,7 @@ else
 
 <div  class="col-12 d-flex flex-column justify-content-around align-items-center text-white mt-5 mb-5">
    
-    <a href="/books" class="btn btn-primary btn-outline-light " style=" width: 500px;  font-size: 20px;" >Cancel</a>
+    <a href="/books" class="btn btn-primary btn-outline-light mt-5 mb-5 " style=" width: 500px;  font-size: 20px;" >Cancel</a>
     
 </div>
 

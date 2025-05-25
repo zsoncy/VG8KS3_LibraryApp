@@ -28,7 +28,7 @@ public class BookController: ControllerBase
             return Conflict();
         }
         
-        var book = new Book
+        var book = new Book()
         {
             Title = bookDto.Title,
             Author = bookDto.Author,
@@ -68,7 +68,7 @@ public class BookController: ControllerBase
     {
         var matchedBooks = await _dataContext.Books
             .Where(b => b.Title.ToLower().Contains(title.ToLower()))
-            .Select(b => new BookDto
+            .Select(b => new BookDto()
             {
                 BookId = b.BookId,
                 Title = b.Title,
@@ -80,6 +80,7 @@ public class BookController: ControllerBase
 
         return Ok(matchedBooks);
     }
+    
     [HttpGet("{bookId}")]
     public async Task<ActionResult<BookDto>> Get(int bookId)
     {

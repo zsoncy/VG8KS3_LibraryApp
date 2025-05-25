@@ -80,23 +80,48 @@ public class BookController: ControllerBase
 
         return Ok(matchedBooks);
     }
-    
+    [HttpGet("{bookId}")]
+    public async Task<ActionResult<BookDto>> Get(int bookId)
+    {
+        var book = await _dataContext.Books.FindAsync(bookId);
+
+        if (book is null)
+        {
+            return NotFound();
+        }
+
+        var bookDto = new BookDto
+        {
+            BookId = book.BookId,
+            Title = book.Title,
+            Author = book.Author,
+            Publisher = book.Publisher,
+            ReleaseDate = book.ReleaseDate
+        };
+
+        return Ok(bookDto);
+    }
+
     [HttpPut("{bookId}")]
     public async Task<IActionResult> Update(int bookId, [FromBody] BookDto bookDto)
     {
         if (bookId != bookDto.BookId)
         {
-            return BadRequest();
+            return BadRequest("Mismatched book ID.");
         }
         
-        var oldBook = await _dataContext.Books.FindAsync(bookId);
+        var existingBook = await _dataContext.Books.FindAsync(bookId);
 
-        if (oldBook is null)
+        if (existingBook is null)
         {
             return NotFound();
         }
         
-        _dataContext.Books.Update(oldBook);
+        existingBook.Title = bookDto.Title;
+        existingBook.Author = bookDto.Author;
+        existingBook.Publisher = bookDto.Publisher;
+        existingBook.ReleaseDate = bookDto.ReleaseDate;
+        
         await _dataContext.SaveChangesAsync();
         return Ok();
     }

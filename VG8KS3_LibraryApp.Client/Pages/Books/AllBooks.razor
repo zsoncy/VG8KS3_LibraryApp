@@ -3,7 +3,6 @@
 @using VG8KS3_LibraryApp.Shared.Models
 @inject HttpClient Http
 
-<PageTitle>Books</PageTitle>
 
 
 <style>
@@ -15,11 +14,16 @@
     }
 </style>
 
+<PageTitle>Books</PageTitle>
+
 <div class="container-fluid">
+    
     <div class="row vh-100">
-        
+
         <div class="col-10 bg-light p-4">
-            <h3>All books in the database.</h3>
+            
+            <h3 class="mb-5 mt-5">All books in the database.</h3>
+            
             @if (books == null)
             {
                 <p>Loading...</p>
@@ -27,6 +31,7 @@
             else
             {
                 <table class="table table-bordered table-striped" style="width: 100%;">
+                    
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -38,6 +43,7 @@
                         <th>Delete</th>
                     </tr>
                     </thead>
+                    
                     <tbody>
                     @foreach (var b in books)
                     {
@@ -48,9 +54,9 @@
                             <td>@b.Publisher</td>
                             <td>@b.ReleaseDate</td>
                             <td class="text-center">
-                                <a href="/books/update" class="btn btn-primary btn-outline-light align-content-center">
+                                <button type="submit" class="btn btn-primary btn-outline-light align-content-center" @onclick="() => NavigateToUpdatePage(b.BookId)">
                                     <span class="bi bi-pencil-square" aria-hidden="true"></span>
-                                </a>
+                                </button>
                             </td>
                             <td class="text-center d-flex flex-column justify-content-center align-items-center">
                                 <button type="submit" class="btn btn-primary btn-outline-light align-content-center" @onclick="() => HandleDeleteBook(b.BookId)">
@@ -60,29 +66,41 @@
                         </tr>
                     }
                     </tbody>
+                    
                 </table>
             }
+            
         </div>
-
+        
         <div class="col-2 d-flex flex-column justify-content-around align-items-center text-white">
+            
             <EditForm Model="@bookSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
-                <InputText @bind-Value="bookSearch.Query" placeholder="Search by title..." class="form-control mb-2" />
+                
+                <InputText @bind-Value="bookSearch.Query" placeholder="Search by title..." class="form-control mb-2"/>
+                
                 <button type="submit" class="btn btn-primary btn-outline-light w-75">
                     <span class="bi bi-search" aria-hidden="true"></span> Search
                 </button>
+                
             </EditForm>
+            
             <EditForm Model="@bookToAdd" OnValidSubmit="@HandleAddBook" class=" d-flex flex-column justify-content-center align-items-center">
+                
                 <InputText @bind-Value="bookToAdd.Title" placeholder="Title" class="form-control mb-2"/>
                 <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2"/>
                 <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2"/>
                 <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2"/>
+                
                 <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
                     <span class="bi bi-plus-square" aria-hidden="true"></span> Add
                 </button>
+                
             </EditForm>
+            
         </div>
 
     </div>
+    
 </div>
 
 
@@ -91,20 +109,26 @@
 
 
 @code {
+    
     [Inject] private NavigationManager Navigation { get; set; } = default!;
+    
     private List<BookDto>? books;
-
-    private async Task LoadBooksAsync()
-    {
-        books = await Http.GetFromJsonAsync<List<BookDto>>("api/Book");
-    }
+     
+    private BookDto bookToAdd = new BookDto();
+    
     
     protected override async Task OnInitializedAsync()
     {
         await LoadBooksAsync();
     }
     
-    private BookDto bookToAdd = new BookDto();
+    
+    private async Task LoadBooksAsync()
+    {
+        books = await Http.GetFromJsonAsync<List<BookDto>>("api/Book");
+    }
+    
+    
     private async Task HandleAddBook()
     {
         var response = await Http.PostAsJsonAsync($"api/Book", bookToAdd);
@@ -121,6 +145,7 @@
 
     }
 
+    
     private async Task HandleDeleteBook(int bookToDeleteId)
     {
         var response = await Http.DeleteAsync($"api/Book/{bookToDeleteId}");
@@ -135,6 +160,7 @@
         }
     }
 
+    
     private class BookSearch
     {
         public string Query { get; set; } = string.Empty;
@@ -147,6 +173,12 @@
             var encodedQuery = Uri.EscapeDataString(bookSearch.Query);
             Navigation.NavigateTo($"/books/search/{encodedQuery}");
         }
+    }
+    
+    
+    private void NavigateToUpdatePage(int bookToUpdateId)
+    {
+        Navigation.NavigateTo($"/books/update/{bookToUpdateId}");
     }
     
 }

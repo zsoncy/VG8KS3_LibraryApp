@@ -76,11 +76,12 @@ else
 
 
 @code {
-    
-}
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [Parameter] public int id { get; set; }
     
+    /// <summary>
+    /// the borrow object we want to update in the database
+    /// </summary>
     private BorrowDto? borrowToUpdate;
 
     
@@ -89,6 +90,9 @@ else
         await LoadBorrowAsync();
     }
 
+    /// <summary>
+    /// method to load borrow from the database by the given id
+    /// </summary>
     private async Task LoadBorrowAsync()
     {
         var response = await Http.GetAsync($"api/Borrow/{id}");
@@ -104,6 +108,9 @@ else
         }
     }
     
+    /// <summary>
+    /// method to UPDATE BORROWS from the database via HTTP Controllers 
+    /// </summary>
     private async Task HandleUpdateBorrow()
     {
         if (borrowToUpdate is null)

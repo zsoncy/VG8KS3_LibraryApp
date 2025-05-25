@@ -78,6 +78,9 @@ else
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [Parameter] public int bookId { get; set; }
     
+    /// <summary>
+    /// list of all the matching borrow objects in the database based on the bookId
+    /// </summary>
     private List<BorrowDto>? borrows;
     
     
@@ -86,6 +89,10 @@ else
         await LoadContentAsync();
     }
     
+    /// <summary>
+    /// method to load the matching data from the database based on the bookId,
+    /// in other words, to SEARCH BORROW from the database via HTTP Controllers
+    /// </summary>
     private async Task LoadContentAsync()
     {
         string url;
@@ -111,13 +118,22 @@ else
         }
     }
     
+    /// <summary>
+    /// the class for the search containing the query
+    /// </summary>
     private class BorrowSearch
     {
         public int bookId { get; set; }
     }
     
+    /// <summary>
+    /// the search object that will store the query
+    /// </summary>
     private BorrowSearch borrowSearch = new BorrowSearch();
     
+    /// <summary>
+    /// method to navigate to SEARCH BOOK page according to the query
+    /// </summary>
     private void NavigateToSearchPage()
     {
         if (borrowSearch.bookId > 0)

@@ -115,8 +115,14 @@
 
     [Inject] private NavigationManager Navigation { get; set; } = default!;
 
+    /// <summary>
+    /// list of all the borrow objects in the database
+    /// </summary>
     private List<BorrowDto>? borrows;
 
+    /// <summary>
+    /// the borrow object we want to add to the database
+    /// </summary>
     private BorrowDto borrowToAdd = new BorrowDto();
 
 
@@ -125,11 +131,17 @@
         await LoadBorrowsAsync();
     }
 
+    /// <summary>
+    /// method to load all borrow objects from the database
+    /// </summary>
     private async Task LoadBorrowsAsync()
     {
         borrows = await Http.GetFromJsonAsync<List<BorrowDto>>("api/Borrow");
     }
 
+    /// <summary>
+    /// method to ADD BORROW to the database via HTTP Controllers
+    /// </summary>
     private async Task HandleAddBorrow()
     {
         var response = await Http.PostAsJsonAsync($"api/Borrow", borrowToAdd);
@@ -146,6 +158,10 @@
 
     }
 
+    /// <summary>
+    /// method to DELETE BORROW from the database via HTTP Controllers
+    /// </summary>
+    /// <param name="borrowToDeleteId">the ID of the borrow that is supposed to be deleted</param>
     private async Task HandleDeleteBorrow(int borrowToDeleteId)
     {
         var response = await Http.DeleteAsync($"api/Borrow/{borrowToDeleteId}");
@@ -160,13 +176,22 @@
         }
     }
 
+    /// <summary>
+    /// the class for the search containing the query
+    /// </summary>
     private class BorrowSearch
     {
         public int bookId { get; set; }
     }
     
+    /// <summary>
+    /// the search object that will store the query
+    /// </summary>
     private BorrowSearch borrowSearch = new BorrowSearch();
     
+    /// <summary>
+    /// method to navigate to SEARCH BOOK page according to the query
+    /// </summary>
     private void NavigateToSearchPage()
     {
         if (borrowSearch.bookId > 0)
@@ -175,6 +200,10 @@
         }
     }
 
+    /// <summary>
+    /// method to navigate to UPDATE BORROW page
+    /// </summary>
+    /// <param name="borrowToUpdateId">the ID of the borrow what is supposed to be edited, for navigation</param>
     private void NavigateToUpdatePage(int borrowToUpdateId)
     {
         Navigation.NavigateTo($"/borrows/update/{borrowToUpdateId}");

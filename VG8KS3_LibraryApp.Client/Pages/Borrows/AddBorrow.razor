@@ -63,8 +63,14 @@
 @code {
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     
+    /// <summary>
+    /// the borrow object we want to add to the database
+    /// </summary>
     private BorrowDto borrowToAdd = new BorrowDto();
     
+    /// <summary>
+    /// method to ADD BORROW to the database via HTTP Controllers 
+    /// </summary>
     private async Task HandleAddBorrow()
     {
         var response = await Http.PostAsJsonAsync($"api/Borrow", borrowToAdd);

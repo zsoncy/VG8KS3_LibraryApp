@@ -1,9 +1,129 @@
-@page "/borrows/update"
-<h3>Update the details of a borrow by ID.</h3>
+@page "/borrows/update/"
+@page "/borrows/update/{id:int}"
+@using VG8KS3_LibraryApp.Shared.Models
+@inject HttpClient Http
+
+
+
+<style>
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
+
 
 <PageTitle>Update borrow</PageTitle>
+
+@if (borrowToUpdate == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    
+    <h3 class="mb-5 mt-5">Update the details of a borrow.</h3>
+    
+    <EditForm Model="@borrowToUpdate" OnValidSubmit="@HandleUpdateBorrow" class=" d-flex flex-column justify-content-center align-items-center">
+        
+        <table class="table table-striped table-bordered mt-5 mb-5 text-center align-middle">
+            
+            <thead>
+            <tr>
+                <th>Book ID</th>
+                <th>Reader ID</th>
+                <th>Date of borrow</th>
+                <th>Date of return</th>
+                <th>Publish</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+            <tr>
+                <td>
+                    <InputNumber @bind-Value="borrowToUpdate.BookId" placeholder="Book ID" class="form-control mb-2"/>
+                </td>
+                <td>
+                    <InputNumber @bind-Value="borrowToUpdate.ReaderId" placeholder="Reader ID" class="form-control mb-2"/>
+                </td>
+                <td>
+                    <InputDate @bind-Value="borrowToUpdate.DateOfBorrow" class="form-control mb-2"/>
+                </td>
+                <td>
+                    <InputDate @bind-Value="borrowToUpdate.DateOfReturn" class="form-control mb-2"/>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
+                        <span class="bi bi-plus-square" aria-hidden="true"></span> Update
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+            
+        </table>
+        
+    </EditForm>
+}
+
+<div  class="col-12 d-flex flex-column justify-content-around align-items-center text-white mt-5 mb-5">
+   
+    <a href="/borrows" class="btn btn-primary btn-outline-light mt-5 mb-5 " style=" width: 500px;  font-size: 20px;" >Cancel</a>
+    
+</div>
+
 
 
 @code {
     
+}
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Parameter] public int id { get; set; }
+    
+    private BorrowDto? borrowToUpdate;
+
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBorrowAsync();
+    }
+
+    private async Task LoadBorrowAsync()
+    {
+        var response = await Http.GetAsync($"api/Borrow/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            borrowToUpdate = await response.Content.ReadFromJsonAsync<BorrowDto>();
+        }
+        else
+        {
+            Console.WriteLine("Borrow not found or failed to load.");
+            borrowToUpdate = null;
+        }
+    }
+    
+    private async Task HandleUpdateBorrow()
+    {
+        if (borrowToUpdate is null)
+        {
+            return;
+        }
+            
+        var response = await Http.PutAsJsonAsync($"api/Borrow/{id}", borrowToUpdate);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Borrow updated successfully.");
+            Navigation.NavigateTo("/borrows");
+        }
+        else
+        {
+            Console.WriteLine("Failed to update the borrow.");
+        }
+
+    }
+
+
 }

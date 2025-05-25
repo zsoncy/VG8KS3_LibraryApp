@@ -63,7 +63,25 @@ public class BorrowController :ControllerBase
         var existingBorrows = await _dataContext.Borrows.ToListAsync();
         return Ok(existingBorrows);
     }
+    
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<BorrowDto>>> SearchBorrowsByBookId([FromQuery] int bookId)
+    {
+        var matchedBorrows = await _dataContext.Borrows
+            .Where(b => b.BookId == bookId)
+            .Select(b => new BorrowDto()
+            {
+                BorrowId = b.BorrowId,
+                BookId = b.BookId,
+                ReaderId = b.ReaderId,
+                DateOfBorrow = b.DateOfBorrow,
+                DateOfReturn = b.DateOfReturn
+            })
+            .ToListAsync();
 
+        return Ok(matchedBorrows);
+    }
+    
     [HttpGet("{borrowId}")]
     public async Task<ActionResult<BorrowDto>> Get(int borrowId)
     {
@@ -74,7 +92,16 @@ public class BorrowController :ControllerBase
             return NotFound();
         }
         
-        return Ok(existingBorrow);
+        var borrowDto = new BorrowDto()
+        {
+            BorrowId = borrowId,
+            BookId = existingBorrow.BookId,
+            ReaderId = existingBorrow.ReaderId,
+            DateOfBorrow = existingBorrow.DateOfBorrow,
+            DateOfReturn = existingBorrow.DateOfReturn
+        };
+        
+        return Ok(borrowDto);
     }
 
     [HttpPut("{borrowId}")]
@@ -82,7 +109,7 @@ public class BorrowController :ControllerBase
     {
         if (borrowId != borrowDto.BorrowId)
         {
-            return BadRequest();
+            return BadRequest("Mismatched borrow ID.");
         }
         
         var existingBorrow = await _dataContext.Borrows.FindAsync(borrowId);
@@ -92,7 +119,11 @@ public class BorrowController :ControllerBase
             return NotFound();
         }
         
-        _dataContext.Borrows.Update(existingBorrow);
+        existingBorrow.BookId = borrowDto.BookId;
+        existingBorrow.ReaderId = borrowDto.ReaderId;
+        existingBorrow.DateOfBorrow = borrowDto.DateOfBorrow;
+        existingBorrow.DateOfReturn = borrowDto.DateOfReturn;
+
         await _dataContext.SaveChangesAsync();
         return Ok();
     }

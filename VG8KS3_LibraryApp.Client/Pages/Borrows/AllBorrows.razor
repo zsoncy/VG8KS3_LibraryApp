@@ -1,9 +1,7 @@
 @page "/borrows"
 @using VG8KS3_LibraryApp.Shared.Models
-
 @inject HttpClient Http
 
-<PageTitle>Borrows</PageTitle>
 
 
 <style>
@@ -14,69 +12,172 @@
         color: white !important;
     }
 </style>
+
+<PageTitle>Borrows</PageTitle>
+
 <div class="container-fluid">
+
     <div class="row vh-100">
-        
+
         <div class="col-10 bg-light p-4">
-            <h3>All borrows in the database.</h3>
+
+            <h3 class="mb-5 mt-5">All borrows in the database.</h3>
+
             @if (borrows == null)
             {
                 <p>Loading...</p>
             }
             else
             {
-                <table class="table table-bordered table-striped" style="width: 100%;">
+                <table class="table table-bordered table-striped text-center align-middle" style="width: 100%;">
+
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Reader ID</th>
                         <th>Book ID</th>
+                        <th>Reader ID</th>
                         <th>Date of borrow</th>
                         <th>Date of return</th>
                         <th>Update</th>
+                        <th>Delete</th>
                     </tr>
                     </thead>
+
                     <tbody>
                     @foreach (var b in borrows)
                     {
                         <tr>
                             <td>@b.BorrowId</td>
-                            <td>@b.ReaderId</td>
                             <td>@b.BookId</td>
-                            <td>@b.DateOfBorrow</td>
-                            <td>@b.DateOfReturn</td>
-                            <td class="text-center">
-                                <a href="/borrows/update" class="btn btn-primary btn-outline-light align-content-center">
+                            <td>@b.ReaderId</td>
+                            <td>@($"{b.DateOfBorrow.Year}. {b.DateOfBorrow.Month}. {b.DateOfBorrow.Day}")</td>
+                            <td>@($"{b.DateOfReturn.Year}. {b.DateOfReturn.Month}. {b.DateOfReturn.Day}")</td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-outline-light align-content-center" @onclick="() => NavigateToUpdatePage(b.BorrowId)">
                                     <span class="bi bi-pencil-square" aria-hidden="true"></span>
-                                </a>
+                                </button>
+                            </td>
+                            <td class=" d-flex flex-column justify-content-center align-items-center">
+                                <button type="submit" class="btn btn-primary btn-outline-light align-content-center" @onclick="() => HandleDeleteBorrow(b.BorrowId)">
+                                    <span class="bi bi-trash-fill" aria-hidden="true"></span>
+                                </button>
                             </td>
                         </tr>
                     }
                     </tbody>
+
                 </table>
             }
+
         </div>
 
-        <div class="col-2 d-flex flex-column justify-content-center align-items-center text-white">
-            <a href="/borrows/add" class="btn btn-primary btn-outline-light mb-3 w-75">
-                <span class="bi bi-plus-square" aria-hidden="true"></span> Add
-            </a>
-            <a href="/borrows/search" class="btn btn-primary btn-outline-light w-75">
-                <span class="bi bi-search" aria-hidden="true"></span> Search
-            </a>
+        <div class="col-2 d-flex h-50">
+
+            <div class=" flex-column d-flex justify-content-around align-items-center text-white">
+
+                <EditForm Model="@borrowSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
+
+                    <InputNumber @bind-Value="borrowSearch.bookId" placeholder="Search by book ID..." class="form-control mb-2"/>
+
+                    <button type="submit" class="btn btn-primary btn-outline-light w-75">
+                        <span class="bi bi-search" aria-hidden="true"></span> Search
+                    </button>
+
+                </EditForm>
+
+                <EditForm Model="@borrowToAdd" OnValidSubmit="@HandleAddBorrow" class=" d-flex flex-column justify-content-center align-items-center">
+                    
+                    <InputNumber @bind-Value="borrowToAdd.BookId" placeholder="Book ID" class="form-control mb-2"/>
+                    <InputNumber @bind-Value="borrowToAdd.ReaderId" placeholder="Reader ID" class="form-control mb-2"/>
+                    <InputDate @bind-Value="borrowToAdd.DateOfBorrow" class="form-control mb-2"/>
+                    <InputDate @bind-Value="borrowToAdd.DateOfReturn" class="form-control mb-2"/>
+
+                    <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
+                        <span class="bi bi-plus-square" aria-hidden="true"></span> Add
+                    </button>
+
+                </EditForm>
+
+            </div>
+
         </div>
-        
+
     </div>
+
 </div>
 
 
 
 
+
+
 @code {
+
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+
     private List<BorrowDto>? borrows;
+
+    private BorrowDto borrowToAdd = new BorrowDto();
+
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadBorrowsAsync();
+    }
+
+    private async Task LoadBorrowsAsync()
+    {
         borrows = await Http.GetFromJsonAsync<List<BorrowDto>>("api/Borrow");
     }
+
+    private async Task HandleAddBorrow()
+    {
+        var response = await Http.PostAsJsonAsync($"api/Borrow", borrowToAdd);
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Borrow added successfully.");
+            borrowToAdd = new BorrowDto();
+            await LoadBorrowsAsync();
+        }
+        else
+        {
+            Console.WriteLine("Failed to add the borrow.");
+        }
+
+    }
+
+    private async Task HandleDeleteBorrow(int borrowToDeleteId)
+    {
+        var response = await Http.DeleteAsync($"api/Borrow/{borrowToDeleteId}");
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Borrow deleted successfully.");
+            await LoadBorrowsAsync();
+        }
+        else
+        {
+            Console.WriteLine("Failed to delete the borrow.");
+        }
+    }
+
+    private class BorrowSearch
+    {
+        public int bookId { get; set; }
+    }
+    
+    private BorrowSearch borrowSearch = new BorrowSearch();
+    
+    private void NavigateToSearchPage()
+    {
+        if (borrowSearch.bookId > 0)
+        {
+            Navigation.NavigateTo($"/borrows/search/{borrowSearch.bookId}");
+        }
+    }
+
+    private void NavigateToUpdatePage(int borrowToUpdateId)
+    {
+        Navigation.NavigateTo($"/borrows/update/{borrowToUpdateId}");
+    }
+
 }

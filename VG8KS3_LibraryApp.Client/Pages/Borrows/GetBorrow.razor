@@ -1,9 +1,129 @@
-@page "/borrows/search"
-<h3>Search for a borrow by ID.</h3>
+@page "/borrows/search/"
+@page "/borrows/search/{bookId:int}"
+@using VG8KS3_LibraryApp.Shared.Models
+@inject HttpClient Http
+
+
+<style>
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
 
 <PageTitle>Search borrow</PageTitle>
 
+<h3 class="mb-5 mt-5">Search results for book ID: @bookId</h3>
+
+<div class="col-12 d-flex flex-column justify-content-around align-items-center text-white">
+    
+    <EditForm Model="@borrowSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex w-100 mt-4 gap-4">
+        
+        <InputNumber @bind-Value="borrowSearch.bookId" placeholder="Search by book ID..." class="form-control mb-2 "/>
+       
+        <button type="submit" class="btn btn-primary btn-outline-light" style=" height: 40px; width: 300px;">
+            <span class="bi bi-search" aria-hidden="true"></span> Search
+        </button>
+        
+    </EditForm>
+    
+</div>
+
+@if (borrows == null)
+{
+    <p>Loading...</p>
+}
+else if (borrows.Count == 0)
+{
+    <p>No borrows found.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        
+        <thead>
+        <tr>
+            <th>Book ID</th>
+            <th>Reader ID</th>
+            <th>Date of borrow</th>
+            <th>Date of return</th>
+        </tr>
+        </thead>
+        
+        <tbody>
+        @foreach (var borrow in borrows)
+        {
+            <tr>
+                <td>@borrow.BookId</td>
+                <td>@borrow.ReaderId</td>
+                <td>@($"{borrow.DateOfBorrow.Year}. {borrow.DateOfBorrow.Month}. {borrow.DateOfBorrow.Day}")</td>
+                <td>@($"{borrow.DateOfReturn.Year}. {borrow.DateOfReturn.Month}. {borrow.DateOfReturn.Day}")</td>
+            </tr>
+        }
+        </tbody>
+        
+    </table>
+}
+
+<div class="col-12 d-flex flex-column justify-content-around align-items-center text-white mt-5 mb-5">
+    
+    <a href="/borrows" class="btn btn-primary btn-outline-light " style=" width: 500px;  font-size: 20px;">Cancel</a>
+    
+</div>
+
 
 @code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Parameter] public int bookId { get; set; }
+    
+    private List<BorrowDto>? borrows;
+    
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadContentAsync();
+    }
+    
+    private async Task LoadContentAsync()
+    {
+        string url;
+
+        if (bookId == null)
+        {
+            url = "api/Borrow/";
+        }
+        else
+        {
+            url = $"api/Borrow/search?BookId={bookId}";
+        }
+
+        var response = await Http.GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            borrows = await response.Content.ReadFromJsonAsync<List<BorrowDto>>();
+        }
+        else
+        {
+            borrows = new();
+        }
+    }
+    
+    private class BorrowSearch
+    {
+        public int bookId { get; set; }
+    }
+    
+    private BorrowSearch borrowSearch = new BorrowSearch();
+    
+    private void NavigateToSearchPage()
+    {
+        if (borrowSearch.bookId > 0)
+        {
+            Navigation.NavigateTo($"/borrows/search/{borrowSearch.bookId}");
+        }
+    }
     
 }

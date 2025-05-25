@@ -1,9 +1,84 @@
 @page "/books/add"
-<h3>Add a book.</h3>
+@using VG8KS3_LibraryApp.Shared.Models
+@inject HttpClient Http
+
+
+
+<style>
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
 
 <PageTitle>Add book</PageTitle>
 
+<h3 class="mb-5 mt-5">Add a new book to the database.</h3>
+
+<EditForm Model="@bookToAdd" OnValidSubmit="@HandleAddBook" class=" d-flex flex-column justify-content-center align-items-center">
+    <table class="table table-striped table-bordered mt-5 mb-5">
+        
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>Release Year</th>
+            <th>Publish</th>
+        </tr>
+        </thead>
+        
+        <tbody>
+        <tr>
+            <td>
+                <InputText @bind-Value="bookToAdd.Title" placeholder="Title" class="form-control mb-2"/>
+            </td>
+            <td>
+                <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2"/>
+            </td>
+            <td>
+                <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2"/>
+            </td>
+            <td>
+                <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2"/>
+            </td>
+            <td>
+                <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
+                    <span class="bi bi-plus-square" aria-hidden="true"></span> Add
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    
+    </table>
+</EditForm>
+
+<div  class="col-12 d-flex flex-column justify-content-around align-items-center text-white mt-5 mb-5">
+    <a href="/books" class="btn btn-primary btn-outline-light " style=" width: 500px;  font-size: 20px;" >Cancel</a>
+</div>
+
 
 @code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
     
+    private BookDto bookToAdd = new BookDto();
+    
+    
+    private async Task HandleAddBook()
+    {
+        var response = await Http.PostAsJsonAsync($"api/Book", bookToAdd);
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Book added successfully.");
+            bookToAdd = new BookDto();
+            Navigation.NavigateTo("/books");
+        }
+        else
+        {
+            Console.WriteLine("Failed to add the book.");
+        }
+
+    }
 }

@@ -79,6 +79,9 @@ else
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [Parameter] public int id { get; set; }
     
+    /// <summary>
+    /// the book object we want to update in the database
+    /// </summary>
     private BookDto? bookToUpdate;
 
     
@@ -87,7 +90,9 @@ else
         await LoadBookAsync();
     }
 
-    
+    /// <summary>
+    /// method to load book from the database by the given id
+    /// </summary>
     private async Task LoadBookAsync()
     {
         var response = await Http.GetAsync($"api/Book/{id}");
@@ -103,12 +108,16 @@ else
         }
     }
     
-    
+    /// <summary>
+    /// method to UPDATE BOOK from the database via HTTP Controllers 
+    /// </summary>
     private async Task HandleUpdateBook()
     {
         if (bookToUpdate is null)
+        {
             return;
-
+        }
+            
         var response = await Http.PutAsJsonAsync($"api/Book/{id}", bookToUpdate);
 
         if (response.IsSuccessStatusCode)

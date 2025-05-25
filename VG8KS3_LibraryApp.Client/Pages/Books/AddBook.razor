@@ -63,9 +63,14 @@
 @code {
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     
+    /// <summary>
+    /// the book object we want to add to the database
+    /// </summary>
     private BookDto bookToAdd = new BookDto();
     
-    
+    /// <summary>
+    /// method to ADD BOOK to the database via HTTP Controllers 
+    /// </summary>
     private async Task HandleAddBook()
     {
         var response = await Http.PostAsJsonAsync($"api/Book", bookToAdd);

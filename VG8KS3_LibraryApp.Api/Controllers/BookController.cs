@@ -63,19 +63,24 @@ public class BookController: ControllerBase
         return Ok(books);
     }
 
-    [HttpGet("{bookId}")]
-    public async Task<ActionResult<BookDto>> Get(int bookId)
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<BookDto>>> SearchBooksByTitle([FromQuery] string title)
     {
-        var book = await _dataContext.Books.FindAsync(bookId);
-            
-        if (book is null)
-        {
-            return NotFound();
-        }
-        
-        return Ok(book);
-    }
+        var matchedBooks = await _dataContext.Books
+            .Where(b => b.Title.ToLower().Contains(title.ToLower()))
+            .Select(b => new BookDto
+            {
+                BookId = b.BookId,
+                Title = b.Title,
+                Author = b.Author,
+                Publisher = b.Publisher,
+                ReleaseDate = b.ReleaseDate
+            })
+            .ToListAsync();
 
+        return Ok(matchedBooks);
+    }
+    
     [HttpPut("{bookId}")]
     public async Task<IActionResult> Update(int bookId, [FromBody] BookDto bookDto)
     {

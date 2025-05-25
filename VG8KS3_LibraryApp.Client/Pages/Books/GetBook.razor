@@ -1,9 +1,117 @@
-@page "/books/search"
-<h3>Search for a book by ID.</h3>
+@page "/books/search/"
+@page "/books/search/{query}"
+@using VG8KS3_LibraryApp.Shared.Models
+@inject HttpClient Http
+
+
+<h3>Search results for "@query"</h3>
 
 <PageTitle>Search book</PageTitle>
 
 
+<style>
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: #6f42c1 !important;
+        border-color: #6f42c1 !important;
+        color: white !important;
+    }
+</style>
+
+<div  class="col-12 d-flex flex-column justify-content-around align-items-center text-white">
+    <EditForm Model="@bookSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex w-100 mt-4 gap-4">
+            <InputText @bind-Value="bookSearch.Query" placeholder="Search by title..." class="form-control mb-2 "/>
+            <button type="submit" class="btn btn-primary btn-outline-light" style=" height: 40px; width: 300px;">
+                <span class="bi bi-search" aria-hidden="true"></span> Search
+            </button>
+    </EditForm>
+</div>
+
+@if (books == null)
+{
+    <p>Loading...</p>
+}
+else if (books.Count == 0)
+{
+    <p>No books found.</p>
+}
+else
+{
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publisher</th>
+            <th>Release Year</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var book in books)
+        {
+            <tr>
+                <td>@book.Title</td>
+                <td>@book.Author</td>
+                <td>@book.Publisher</td>
+                <td>@book.ReleaseDate</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
 @code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Parameter] public string query { get; set; } = string.Empty;
+    private List<BookDto>? books;
+
+    private async Task LoadContentAsync()
+    {
+        string url;
+
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            url = "api/Book/";
+        }
+        else
+        {
+            var encodedQuery = Uri.EscapeDataString(query); 
+            url = $"api/Book/search?title={encodedQuery}";
+        }
+
+        var response = await Http.GetAsync(url);
+
+        if (response.IsSuccessStatusCode)
+        {
+            books = await response.Content.ReadFromJsonAsync<List<BookDto>>();
+        }
+        else
+        {
+            books = new();
+        }
+    }
+
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadContentAsync();
+    }
+    
+    
+    
+    
+    private class BookSearch
+    {
+        public string Query { get; set; } = string.Empty;
+    }
+    private BookSearch bookSearch = new BookSearch();
+    private void NavigateToSearchPage()
+    {
+        if (!string.IsNullOrWhiteSpace(bookSearch.Query))
+        {
+            var encodedQuery = Uri.EscapeDataString(bookSearch.Query);
+            Navigation.NavigateTo($"/books/search/{encodedQuery}");
+        }
+    }
     
 }

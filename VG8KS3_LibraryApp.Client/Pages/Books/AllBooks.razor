@@ -1,4 +1,5 @@
 @page "/books"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using VG8KS3_LibraryApp.Shared.Models
 @inject HttpClient Http
 
@@ -63,19 +64,22 @@
             }
         </div>
 
-        <div class="col-2 d-flex flex-column justify-content-center align-items-center text-white">
+        <div class="col-2 d-flex flex-column justify-content-around align-items-center text-white">
+            <EditForm Model="@bookSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
+                <InputText @bind-Value="bookSearch.Query" placeholder="Search by title..." class="form-control mb-2" />
+                <button type="submit" class="btn btn-primary btn-outline-light w-75">
+                    <span class="bi bi-search" aria-hidden="true"></span> Search
+                </button>
+            </EditForm>
             <EditForm Model="@bookToAdd" OnValidSubmit="@HandleAddBook" class=" d-flex flex-column justify-content-center align-items-center">
-                <InputText @bind-Value="bookToAdd.Title" placeholder="Title" class="form-control mb-2" />
-                <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2" />
-                <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2" />
-                <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2" />
+                <InputText @bind-Value="bookToAdd.Title" placeholder="Title" class="form-control mb-2"/>
+                <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2"/>
+                <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2"/>
+                <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2"/>
                 <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
                     <span class="bi bi-plus-square" aria-hidden="true"></span> Add
                 </button>
             </EditForm>
-            <a href="/books/search" class="btn btn-primary btn-outline-light w-75">
-                <span class="bi bi-search" aria-hidden="true"></span> Search
-            </a>
         </div>
 
     </div>
@@ -87,6 +91,7 @@
 
 
 @code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
     private List<BookDto>? books;
 
     private async Task LoadBooksAsync()
@@ -130,4 +135,18 @@
         }
     }
 
+    private class BookSearch
+    {
+        public string Query { get; set; } = string.Empty;
+    }
+    private BookSearch bookSearch = new BookSearch();
+    private void NavigateToSearchPage()
+    {
+        if (!string.IsNullOrWhiteSpace(bookSearch.Query))
+        {
+            var encodedQuery = Uri.EscapeDataString(bookSearch.Query);
+            Navigation.NavigateTo($"/books/search/{encodedQuery}");
+        }
+    }
+    
 }

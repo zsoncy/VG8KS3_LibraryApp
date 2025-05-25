@@ -73,11 +73,12 @@ else
 
 
 @code {
-    
-}
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [Parameter] public int id { get; set; }
     
+    /// <summary>
+    /// the reader object we want to update in the database
+    /// </summary>
     private ReaderDto? readerToUpdate;
 
     
@@ -86,6 +87,9 @@ else
         await LoadBookAsync();
     }
 
+    /// <summary>
+    /// method to load reader from the database by the given id
+    /// </summary>
     private async Task LoadBookAsync()
     {
         var response = await Http.GetAsync($"api/Reader/{id}");
@@ -101,6 +105,9 @@ else
         }
     }
     
+    /// <summary>
+    /// method to UPDATE READER from the database via HTTP Controllers 
+    /// </summary>
     private async Task HandleUpdateReader()
     {
         if (readerToUpdate is null)

@@ -61,8 +61,14 @@
 @code {
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     
+    /// <summary>
+    /// the reader object we want to add to the database
+    /// </summary>
     private ReaderDto readerToAdd = new ReaderDto();
     
+    /// <summary>
+    /// method to ADD READER to the database via HTTP Controllers 
+    /// </summary>
     private async Task HandleAddReader()
     {
         var response = await Http.PostAsJsonAsync($"api/Reader", readerToAdd);

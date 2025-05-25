@@ -73,10 +73,12 @@ else
 
 
 @code {
-    
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     [Parameter] public string query { get; set; } = string.Empty;
 
+    /// <summary>
+    /// list of all the matching reader objects in the database based on the query
+    /// </summary>
     private List<ReaderDto>? readers;
 
 
@@ -85,6 +87,10 @@ else
         await LoadContentAsync();
     }
 
+    /// <summary>
+    /// method to load the matching data from the database based on the query,
+    /// in other words, to SEARCH READER from the database via HTTP Controllers
+    /// </summary>
     private async Task LoadContentAsync()
     {
         string url;
@@ -111,13 +117,22 @@ else
         }
     }
 
+    /// <summary>
+    /// the class for the search containing the query
+    /// </summary>
     private class ReaderSearch
     {
         public string Query { get; set; } = string.Empty;
     }
 
+    /// <summary>
+    /// the search object that will store the query
+    /// </summary>
     private ReaderSearch readerSearch = new ReaderSearch();
 
+    /// <summary>
+    /// method to navigate to SEARCH READER page according to the query
+    /// </summary>
     private void NavigateToSearchPage()
     {
         if (!string.IsNullOrWhiteSpace(readerSearch.Query))

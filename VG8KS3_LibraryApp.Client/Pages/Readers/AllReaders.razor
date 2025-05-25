@@ -113,9 +113,14 @@
     
     [Inject] private NavigationManager Navigation { get; set; } = default!;
     
+    /// <summary>
+    /// list of all the reader objects in the database
+    /// </summary>
     private List<ReaderDto>? readers;
-
     
+    /// <summary>
+    /// the reader object we want to add to the database
+    /// </summary>
     private ReaderDto readerToAdd = new ReaderDto();
 
     
@@ -124,11 +129,17 @@
         await LoadReadersAsync();
     }
     
+    /// <summary>
+    /// method to load all book objects from the database
+    /// </summary>
     private async Task LoadReadersAsync()
     {
         readers = await Http.GetFromJsonAsync<List<ReaderDto>>("api/Reader");
     }
     
+    /// <summary>
+    /// method to ADD READER to the database via HTTP Controllers
+    /// </summary>
     private async Task HandleAddReader()
     {
         var response = await Http.PostAsJsonAsync($"api/Reader", readerToAdd);
@@ -145,6 +156,10 @@
 
     }
     
+    /// <summary>
+    /// method to DELETE READER from the database via HTTP Controllers
+    /// </summary>
+    /// <param name="readerToDeleteId">the ID of the reader that is supposed to be deleted</param>
     private async Task HandleDeleteReader(int readerToDeleteId)
     {
         var response = await Http.DeleteAsync($"api/Reader/{readerToDeleteId}");
@@ -159,13 +174,22 @@
         }
     }
     
+    /// <summary>
+    /// the class for the search containing the query
+    /// </summary>
     private class ReaderSearch
     {
         public string Query { get; set; } = string.Empty;
     }
     
+    /// <summary>
+    /// the search object that will store the query
+    /// </summary>
     private ReaderSearch readerSearch = new ReaderSearch();
     
+    /// <summary>
+    /// method to navigate to SEARCH READER page according to the query
+    /// </summary>
     private void NavigateToSearchPage()
     {
         if (!string.IsNullOrWhiteSpace(readerSearch.Query))
@@ -175,6 +199,10 @@
         }
     }
     
+    /// <summary>
+    /// method to navigate to UPDATE READER page
+    /// </summary>
+    /// <param name="readerToUpdateId">the ID of the reader that is supposed to be edited, for navigation</param>
     private void NavigateToUpdatePage(int readerToUpdateId)
     {
         Navigation.NavigateTo($"/readers/update/{readerToUpdateId}");

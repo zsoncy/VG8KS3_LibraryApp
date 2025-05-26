@@ -37,7 +37,8 @@ public class BookController: ControllerBase
         
         _dataContext.Books.Add(newBook);
         await _dataContext.SaveChangesAsync();
-        return Ok();
+        return CreatedAtAction(nameof(Get), new { id = newBook.BookId }, newBook);
+
     }
 
     [HttpDelete("{bookId}")]
@@ -122,8 +123,8 @@ public class BookController: ControllerBase
         existingBook.Publisher = book.Publisher;
         existingBook.ReleaseDate = book.ReleaseDate;
         
-        await _dataContext.SaveChangesAsync();
-        return Ok();
+        await _dataContext.SaveChangesAsync(); 
+        return NoContent();
     }
     
 }

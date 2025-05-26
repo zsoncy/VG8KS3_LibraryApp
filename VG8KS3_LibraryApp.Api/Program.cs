@@ -6,8 +6,6 @@ using VG8KS3_LibraryApp.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -20,7 +18,10 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-builder.Services.AddSwaggerGen();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSwaggerGen();
+}
 
 builder.Services.AddSerilog(
     options => options
@@ -40,10 +41,9 @@ builder.Services.AddSingleton<IBorrowService, BorrowService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
-    //app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
 }
@@ -51,7 +51,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGet("/", () => Results.Redirect("/swagger"));
-//app.UseAuthorization();
 
 app.UseCors();
 

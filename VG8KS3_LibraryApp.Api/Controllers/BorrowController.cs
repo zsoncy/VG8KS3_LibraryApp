@@ -26,7 +26,7 @@ public class BorrowController :ControllerBase
         {
             return Conflict();
         }
-        
+
         var newBorrow = new Borrow()
         {
             BookId = borrow.BookId,
@@ -34,12 +34,12 @@ public class BorrowController :ControllerBase
             DateOfBorrow = borrow.DateOfBorrow,
             DateOfReturn = borrow.DateOfReturn
         };
-        
-        
+
+
         _dataContext.Borrows.Add(newBorrow);
         await _dataContext.SaveChangesAsync();
-        return Ok();
-    }
+        return CreatedAtAction(nameof(Get), new { id = newBorrow.BorrowId }, newBorrow);
+}
     
     [HttpDelete("{borrowId}")]
     public async Task<IActionResult> Delete(int borrowId)
@@ -124,7 +124,7 @@ public class BorrowController :ControllerBase
         existingBorrow.DateOfReturn = borrow.DateOfReturn;
 
         await _dataContext.SaveChangesAsync();
-        return Ok();
+        return NoContent();
     }
     
 }

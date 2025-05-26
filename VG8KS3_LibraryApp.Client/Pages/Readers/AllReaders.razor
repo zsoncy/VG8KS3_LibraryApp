@@ -88,10 +88,16 @@
                 <p>Add reader to the database.</p>
                 
                 <EditForm Model="@readerToAdd" OnValidSubmit="@HandleAddReader" class=" d-flex flex-column justify-content-center align-items-center">
+                    <DataAnnotationsValidator />
 
                     <InputText @bind-Value="readerToAdd.Name" placeholder="Name" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => readerToAdd.Name)" />
+                    
                     <InputText @bind-Value="readerToAdd.Adress" placeholder="Address" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => readerToAdd.Adress)" />
+                    
                     <InputDate @bind-Value="readerToAdd.DateOfBirth" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => readerToAdd.DateOfBirth)" />
 
                     <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
                         <span class="bi bi-plus-square" aria-hidden="true"></span> Add

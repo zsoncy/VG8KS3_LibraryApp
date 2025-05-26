@@ -18,6 +18,8 @@
 <h3 class="mb-5 mt-5">Add a new reader to the database.</h3>
 
 <EditForm Model="@readerToAdd" OnValidSubmit="@HandleAddReader" class=" d-flex flex-column justify-content-center align-items-center">
+    <DataAnnotationsValidator />
+    
     <table class="table table-striped table-bordered mt-5 mb-5">
 
         <thead>
@@ -28,17 +30,20 @@
             <th>Publish</th>
         </tr>
         </thead>
-        
+
         <tbody>
         <tr>
             <td>
                 <InputText @bind-Value="readerToAdd.Name" placeholder="Name" class="form-control mb-2"/>
+                <ValidationMessage For="@(() => readerToAdd.Name)" />
             </td>
             <td>
                 <InputText @bind-Value="readerToAdd.Adress" placeholder="Address" class="form-control mb-2"/>
+                <ValidationMessage For="@(() => readerToAdd.Adress)" />
             </td>
             <td>
                 <InputDate @bind-Value="readerToAdd.DateOfBirth" class="form-control mb-2"/>
+                <ValidationMessage For="@(() => readerToAdd.DateOfBirth)" />
             </td>
             <td>
                 <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
@@ -47,7 +52,7 @@
             </td>
         </tr>
         </tbody>
-    
+
     </table>
 </EditForm>
 

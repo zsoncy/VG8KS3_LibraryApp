@@ -27,7 +27,8 @@ else
     <h3 class="mb-5 mt-5">Update the details of the reader: "@readerToUpdate.Name".</h3>
   
     <EditForm Model="@readerToUpdate" OnValidSubmit="@HandleUpdateReader" class=" d-flex flex-column justify-content-center align-items-center">
-        
+        <DataAnnotationsValidator />
+
         <table class="table table-striped table-bordered mt-5 mb-5">
             
             <thead>
@@ -43,12 +44,15 @@ else
             <tr>
                 <td>
                     <InputText @bind-Value="readerToUpdate.Name" placeholder="Name" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => readerToUpdate.Name)" />
                 </td>
                 <td>
                     <InputText @bind-Value="readerToUpdate.Adress" placeholder="Address" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => readerToUpdate.Adress)" />
                 </td>
                 <td>
                     <InputDate @bind-Value="readerToUpdate.DateOfBirth" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => readerToUpdate.DateOfBirth)" />
                 </td>
                <td class="text-center align-middle">
                     <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">

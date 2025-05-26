@@ -56,8 +56,8 @@ public class ReaderControllerTests
         };
 
         var result = await _controller.Add(newReader);
-        var createdResult = Assert.IsType<CreatedAtActionResult>(result);
-        var returnedReader = Assert.IsType<Reader>(createdResult.Value);
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var returnedReader = Assert.IsType<Reader>(okResult.Value);
         
         Assert.Equal(newReader.Name, returnedReader.Name);
         Assert.Equal(newReader.Adress, returnedReader.Adress);

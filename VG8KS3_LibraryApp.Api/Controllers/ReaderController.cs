@@ -36,7 +36,7 @@ public class ReaderController: ControllerBase
         
         _dataContext.Readers.Add(newReader);
         await _dataContext.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = newReader.ReaderId }, newReader);
+        return Ok(newReader);
     }
 
     [HttpDelete("{readerId}")]

@@ -38,7 +38,7 @@ public class BorrowController :ControllerBase
 
         _dataContext.Borrows.Add(newBorrow);
         await _dataContext.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = newBorrow.BorrowId }, newBorrow);
+        return Ok(newBorrow);
 }
     
     [HttpDelete("{borrowId}")]

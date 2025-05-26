@@ -37,7 +37,7 @@ public class BookController: ControllerBase
         
         _dataContext.Books.Add(newBook);
         await _dataContext.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = newBook.BookId }, newBook);
+        return Ok(newBook);
 
     }
 

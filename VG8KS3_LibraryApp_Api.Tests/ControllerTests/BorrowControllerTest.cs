@@ -57,8 +57,8 @@ public class BorrowControllerTest
         };
 
         var result = await _controller.Add(newBorrow);
-        var createdResult = Assert.IsType<CreatedAtActionResult>(result);
-        var returnedBorrow = Assert.IsType<Borrow>(createdResult.Value);
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var returnedBorrow = Assert.IsType<Borrow>(okResult.Value);
         
         Assert.Equal(newBorrow.BookId, returnedBorrow.BookId);
         Assert.Equal(newBorrow.ReaderId, returnedBorrow.ReaderId);

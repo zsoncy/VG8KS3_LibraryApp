@@ -57,8 +57,8 @@ public class BooksControllerTests
         };
 
         var result = await _controller.Add(newBook);
-        var createdResult = Assert.IsType<CreatedAtActionResult>(result);
-        var returnedBook = Assert.IsType<Book>(createdResult.Value);
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var returnedBook = Assert.IsType<Book>(okResult.Value);
         
         Assert.Equal(newBook.Title, returnedBook.Title);
         Assert.Equal(newBook.Author, returnedBook.Author);

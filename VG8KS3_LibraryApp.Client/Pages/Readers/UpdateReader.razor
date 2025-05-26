@@ -79,7 +79,7 @@ else
     /// <summary>
     /// the reader object we want to update in the database
     /// </summary>
-    private ReaderDto? readerToUpdate;
+    private Reader? readerToUpdate;
 
     
     protected override async Task OnInitializedAsync()
@@ -96,7 +96,7 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            readerToUpdate = await response.Content.ReadFromJsonAsync<ReaderDto>();
+            readerToUpdate = await response.Content.ReadFromJsonAsync<Reader>();
         }
         else
         {

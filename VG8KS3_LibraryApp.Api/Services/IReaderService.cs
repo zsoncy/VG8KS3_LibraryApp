@@ -1,4 +1,4 @@
-using VG8KS3_LibraryApp.Api.Models;
+using VG8KS3_LibraryApp.Shared.Models;
 
 namespace VG8KS3_LibraryApp.Api.Services;
 

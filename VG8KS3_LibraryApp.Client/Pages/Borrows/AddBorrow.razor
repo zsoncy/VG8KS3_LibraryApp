@@ -66,7 +66,7 @@
     /// <summary>
     /// the borrow object we want to add to the database
     /// </summary>
-    private BorrowDto borrowToAdd = new BorrowDto();
+    private Borrow borrowToAdd = new Borrow();
     
     /// <summary>
     /// method to ADD BORROW to the database via HTTP Controllers 
@@ -77,7 +77,7 @@
         if (response.IsSuccessStatusCode)
         {
             Console.WriteLine("Borrow added successfully.");
-            borrowToAdd = new BorrowDto();
+            borrowToAdd = new Borrow();
             Navigation.NavigateTo("/borrows");
         }
         else

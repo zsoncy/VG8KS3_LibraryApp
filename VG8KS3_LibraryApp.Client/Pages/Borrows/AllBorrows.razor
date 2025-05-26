@@ -118,12 +118,12 @@
     /// <summary>
     /// list of all the borrow objects in the database
     /// </summary>
-    private List<BorrowDto>? borrows;
+    private List<Borrow>? borrows;
 
     /// <summary>
     /// the borrow object we want to add to the database
     /// </summary>
-    private BorrowDto borrowToAdd = new BorrowDto();
+    private Borrow borrowToAdd = new Borrow();
 
 
     protected override async Task OnInitializedAsync()
@@ -136,7 +136,7 @@
     /// </summary>
     private async Task LoadBorrowsAsync()
     {
-        borrows = await Http.GetFromJsonAsync<List<BorrowDto>>("api/Borrow");
+        borrows = await Http.GetFromJsonAsync<List<Borrow>>("api/Borrow");
     }
 
     /// <summary>
@@ -148,7 +148,7 @@
         if (response.IsSuccessStatusCode)
         {
             Console.WriteLine("Borrow added successfully.");
-            borrowToAdd = new BorrowDto();
+            borrowToAdd = new Borrow();
             await LoadBorrowsAsync();
         }
         else

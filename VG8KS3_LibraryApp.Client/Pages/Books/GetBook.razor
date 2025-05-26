@@ -81,7 +81,7 @@ else
     /// <summary>
     /// list of all the matching book objects in the database based on the query
     /// </summary>
-    private List<BookDto>? books;
+    private List<Book>? books;
     
     
     protected override async Task OnParametersSetAsync()
@@ -111,7 +111,7 @@ else
         
         if (response.IsSuccessStatusCode)
         {
-            books = await response.Content.ReadFromJsonAsync<List<BookDto>>();
+            books = await response.Content.ReadFromJsonAsync<List<Book>>();
         }
         else
         {

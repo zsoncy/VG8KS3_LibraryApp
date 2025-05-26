@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace VG8KS3_LibraryApp.Api.Models;
+namespace VG8KS3_LibraryApp.Shared.Models;
 
 public class Borrow
 {
@@ -37,3 +37,4 @@ public class Borrow
         }
     }
 }
+    

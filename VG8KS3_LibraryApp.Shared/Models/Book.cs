@@ -1,11 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace VG8KS3_LibraryApp.Api.Models;
+namespace VG8KS3_LibraryApp.Shared.Models;
 
 public class Book
-{
-    
-    [Key]
+{ [Key]
     public int BookId { get; set; }
     
     [Required(ErrorMessage = "Title is required.")]
@@ -25,7 +23,5 @@ public class Book
     [Required(ErrorMessage = "Release date is required.")]
     [Range(0,int.MaxValue, ErrorMessage = "The release year cannot be negative.")]
     public int ReleaseDate{ get; set; }
-
-
-
+    
 }

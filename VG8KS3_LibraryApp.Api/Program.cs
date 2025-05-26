@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using VG8KS3_LibraryApp.Api.DataBase;
-using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);

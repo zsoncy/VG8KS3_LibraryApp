@@ -64,7 +64,7 @@
     /// <summary>
     /// the reader object we want to add to the database
     /// </summary>
-    private ReaderDto readerToAdd = new ReaderDto();
+    private Reader readerToAdd = new Reader();
     
     /// <summary>
     /// method to ADD READER to the database via HTTP Controllers 
@@ -75,7 +75,7 @@
         if (response.IsSuccessStatusCode)
         {
             Console.WriteLine("Reader added successfully.");
-            readerToAdd = new ReaderDto();
+            readerToAdd = new Reader();
             Navigation.NavigateTo("/readers");
         }
         else

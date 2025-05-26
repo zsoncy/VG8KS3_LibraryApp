@@ -116,12 +116,12 @@
     /// <summary>
     /// list of all the reader objects in the database
     /// </summary>
-    private List<ReaderDto>? readers;
+    private List<Reader>? readers;
     
     /// <summary>
     /// the reader object we want to add to the database
     /// </summary>
-    private ReaderDto readerToAdd = new ReaderDto();
+    private Reader readerToAdd = new Reader();
 
     
     protected override async Task OnInitializedAsync()
@@ -134,7 +134,7 @@
     /// </summary>
     private async Task LoadReadersAsync()
     {
-        readers = await Http.GetFromJsonAsync<List<ReaderDto>>("api/Reader");
+        readers = await Http.GetFromJsonAsync<List<Reader>>("api/Reader");
     }
     
     /// <summary>
@@ -146,7 +146,7 @@
         if (response.IsSuccessStatusCode)
         {
             Console.WriteLine("Book added successfully.");
-            readerToAdd = new ReaderDto();
+            readerToAdd = new Reader();
             await LoadReadersAsync();
         }
         else

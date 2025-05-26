@@ -82,7 +82,7 @@ else
     /// <summary>
     /// the book object we want to update in the database
     /// </summary>
-    private BookDto? bookToUpdate;
+    private Book? bookToUpdate;
 
     
     protected override async Task OnInitializedAsync()
@@ -99,7 +99,7 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            bookToUpdate = await response.Content.ReadFromJsonAsync<BookDto>();
+            bookToUpdate = await response.Content.ReadFromJsonAsync<Book>();
         }
         else
         {

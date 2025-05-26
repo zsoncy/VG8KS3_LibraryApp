@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VG8KS3_LibraryApp.Api.DataBase;
-using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
 using VG8KS3_LibraryApp.Shared.Models;
 
@@ -19,23 +18,23 @@ public class ReaderController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] ReaderDto readerDto)
+    public async Task<IActionResult> Add([FromBody] Reader reader)
     {
-        var existingReader = await _dataContext.Readers.FindAsync(readerDto.ReaderId);
+        var existingReader = await _dataContext.Readers.FindAsync(reader.ReaderId);
 
         if (existingReader is not null)
         {
             return Conflict();
         }
         
-        var reader = new Reader()
+        var newReader = new Reader()
         {
-            Name = readerDto.Name,
-            Adress = readerDto.Adress, 
-            DateOfBirth = readerDto.DateOfBirth,
+            Name = reader.Name,
+            Adress = reader.Adress, 
+            DateOfBirth = reader.DateOfBirth,
         };
         
-        _dataContext.Readers.Add(reader);
+        _dataContext.Readers.Add(newReader);
         await _dataContext.SaveChangesAsync();
         return Ok();
     }
@@ -56,18 +55,18 @@ public class ReaderController: ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<ReaderDto>>> GetAll()
+    public async Task<ActionResult<List<Reader>>> GetAll()
     {
         var readers = await _dataContext.Readers.ToListAsync();
         return Ok(readers);
     }
 
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<ReaderDto>>> SearchReadersByName([FromQuery] string name)
+    public async Task<ActionResult<IEnumerable<Reader>>> SearchReadersByName([FromQuery] string name)
     {
         var matchedReaders = await _dataContext.Readers
             .Where(r => r.Name.ToLower().Contains(name.ToLower()))
-            .Select(r => new ReaderDto()
+            .Select(r => new Reader()
             {
                 ReaderId = r.ReaderId,
                 Name = r.Name,
@@ -80,7 +79,7 @@ public class ReaderController: ControllerBase
     }
 
     [HttpGet("{readerId}")]
-    public async Task<ActionResult<ReaderDto>> Get(int readerId)
+    public async Task<ActionResult<Reader>> Get(int readerId)
     {
         var reader = await _dataContext.Readers.FindAsync(readerId);
 
@@ -89,7 +88,7 @@ public class ReaderController: ControllerBase
             return NotFound();
         }   
         
-        var readerDto = new ReaderDto()
+        var newReader = new Reader()
         {
             ReaderId = reader.ReaderId,
             Name = reader.Name,
@@ -97,13 +96,13 @@ public class ReaderController: ControllerBase
             DateOfBirth = reader.DateOfBirth
         };
 
-        return Ok(readerDto);
+        return Ok(newReader);
     }
 
     [HttpPut("{readerId}")]
-    public async Task<IActionResult> Update(int readerId, [FromBody] ReaderDto readerDto)
+    public async Task<IActionResult> Update(int readerId, [FromBody] Reader readerfasz)
     {
-        if (readerId != readerDto.ReaderId)
+        if (readerId != readerfasz.ReaderId)
         {
             return BadRequest("Mismatched reader ID.");
         }
@@ -115,9 +114,9 @@ public class ReaderController: ControllerBase
             return NotFound();
         }
         
-        existingReader.Name = readerDto.Name;
-        existingReader.Adress = readerDto.Adress;
-        existingReader.DateOfBirth = readerDto.DateOfBirth;
+        existingReader.Name = readerfasz.Name;
+        existingReader.Adress = readerfasz.Adress;
+        existingReader.DateOfBirth = readerfasz.DateOfBirth;
         
         await _dataContext.SaveChangesAsync();
         return Ok();

@@ -82,7 +82,7 @@ else
     /// <summary>
     /// the borrow object we want to update in the database
     /// </summary>
-    private BorrowDto? borrowToUpdate;
+    private Borrow? borrowToUpdate;
 
     
     protected override async Task OnInitializedAsync()
@@ -99,7 +99,7 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            borrowToUpdate = await response.Content.ReadFromJsonAsync<BorrowDto>();
+            borrowToUpdate = await response.Content.ReadFromJsonAsync<Borrow>();
         }
         else
         {

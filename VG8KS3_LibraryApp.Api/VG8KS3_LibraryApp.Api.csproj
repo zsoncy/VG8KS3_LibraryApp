@@ -23,4 +23,8 @@
       <ProjectReference Include="..\VG8KS3_LibraryApp.Shared\VG8KS3_LibraryApp.Shared.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models\" />
+    </ItemGroup>
+
 </Project>

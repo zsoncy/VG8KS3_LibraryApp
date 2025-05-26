@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VG8KS3_LibraryApp.Api.DataBase;
-using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
 using VG8KS3_LibraryApp.Shared.Models;
 
@@ -19,24 +18,24 @@ public class BookController: ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] BookDto bookDto)
+    public async Task<IActionResult> Add([FromBody] Book book)
     {
-        var existingBook = await _dataContext.Books.FindAsync(bookDto.BookId);
+        var existingBook = await _dataContext.Books.FindAsync(book.BookId);
 
         if (existingBook is not null)
         {
             return Conflict();
         }
         
-        var book = new Book()
+        var newBook = new Book()
         {
-            Title = bookDto.Title,
-            Author = bookDto.Author,
-            Publisher = bookDto.Publisher,
-            ReleaseDate = bookDto.ReleaseDate
+            Title = book.Title,
+            Author = book.Author,
+            Publisher = book.Publisher,
+            ReleaseDate = book.ReleaseDate
         };
         
-        _dataContext.Books.Add(book);
+        _dataContext.Books.Add(newBook);
         await _dataContext.SaveChangesAsync();
         return Ok();
     }
@@ -57,18 +56,18 @@ public class BookController: ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<BookDto>>> GetAll()
+    public async Task<ActionResult<List<Book>>> GetAll()
     {
         var books = await _dataContext.Books.ToListAsync();
         return Ok(books);
     }
 
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<BookDto>>> SearchBooksByTitle([FromQuery] string title)
+    public async Task<ActionResult<IEnumerable<Book>>> SearchBooksByTitle([FromQuery] string title)
     {
         var matchedBooks = await _dataContext.Books
             .Where(b => b.Title.ToLower().Contains(title.ToLower()))
-            .Select(b => new BookDto()
+            .Select(b => new Book()
             {
                 BookId = b.BookId,
                 Title = b.Title,
@@ -82,7 +81,7 @@ public class BookController: ControllerBase
     }
     
     [HttpGet("{bookId}")]
-    public async Task<ActionResult<BookDto>> Get(int bookId)
+    public async Task<ActionResult<Book>> Get(int bookId)
     {
         var book = await _dataContext.Books.FindAsync(bookId);
 
@@ -91,7 +90,7 @@ public class BookController: ControllerBase
             return NotFound();
         }
 
-        var bookDto = new BookDto
+        var newBook = new Book()
         {
             BookId = book.BookId,
             Title = book.Title,
@@ -100,13 +99,13 @@ public class BookController: ControllerBase
             ReleaseDate = book.ReleaseDate
         };
 
-        return Ok(bookDto);
+        return Ok(newBook);
     }
 
     [HttpPut("{bookId}")]
-    public async Task<IActionResult> Update(int bookId, [FromBody] BookDto bookDto)
+    public async Task<IActionResult> Update(int bookId, [FromBody] Book book)
     {
-        if (bookId != bookDto.BookId)
+        if (bookId != book.BookId)
         {
             return BadRequest("Mismatched book ID.");
         }
@@ -118,10 +117,10 @@ public class BookController: ControllerBase
             return NotFound();
         }
         
-        existingBook.Title = bookDto.Title;
-        existingBook.Author = bookDto.Author;
-        existingBook.Publisher = bookDto.Publisher;
-        existingBook.ReleaseDate = bookDto.ReleaseDate;
+        existingBook.Title = book.Title;
+        existingBook.Author = book.Author;
+        existingBook.Publisher = book.Publisher;
+        existingBook.ReleaseDate = book.ReleaseDate;
         
         await _dataContext.SaveChangesAsync();
         return Ok();

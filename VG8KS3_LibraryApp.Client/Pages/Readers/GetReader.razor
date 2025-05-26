@@ -79,7 +79,7 @@ else
     /// <summary>
     /// list of all the matching reader objects in the database based on the query
     /// </summary>
-    private List<ReaderDto>? readers;
+    private List<Reader>? readers;
 
 
     protected override async Task OnParametersSetAsync()
@@ -109,7 +109,7 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            readers = await response.Content.ReadFromJsonAsync<List<ReaderDto>>();
+            readers = await response.Content.ReadFromJsonAsync<List<Reader>>();
         }
         else
         {

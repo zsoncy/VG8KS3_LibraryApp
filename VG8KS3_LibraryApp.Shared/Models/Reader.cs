@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace VG8KS3_LibraryApp.Api.Models;
+namespace VG8KS3_LibraryApp.Shared.Models;
 
 public class Reader
 {
@@ -18,14 +18,4 @@ public class Reader
     [Required(ErrorMessage = "Birth date is required.")]
     public DateTime DateOfBirth { get; set; }
     
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-        if (DateOfBirth < new DateTime(1900, 1, 1))
-        {
-            yield return new ValidationResult(
-                "Birth date cannot be earlier than 1900.",
-                new[] { nameof(DateOfBirth) });
-        }
-    }
-
 }

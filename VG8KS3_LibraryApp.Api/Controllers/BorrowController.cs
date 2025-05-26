@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using VG8KS3_LibraryApp.Api.DataBase;
-using VG8KS3_LibraryApp.Api.Models;
 using VG8KS3_LibraryApp.Api.Services;
 using VG8KS3_LibraryApp.Shared.Models;
 
@@ -19,25 +18,25 @@ public class BorrowController :ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] BorrowDto borrowDto)
+    public async Task<IActionResult> Add([FromBody] Borrow borrow)
     {
-        var existingBorrow = await _dataContext.Borrows.FindAsync(borrowDto.BorrowId);
+        var existingBorrow = await _dataContext.Borrows.FindAsync(borrow.BorrowId);
 
         if (existingBorrow is not null)
         {
             return Conflict();
         }
         
-        var borrow = new Borrow()
+        var newBorrow = new Borrow()
         {
-            BookId = borrowDto.BookId,
-            ReaderId = borrowDto.ReaderId,
-            DateOfBorrow = borrowDto.DateOfBorrow,
-            DateOfReturn = borrowDto.DateOfReturn
+            BookId = borrow.BookId,
+            ReaderId = borrow.ReaderId,
+            DateOfBorrow = borrow.DateOfBorrow,
+            DateOfReturn = borrow.DateOfReturn
         };
         
         
-        _dataContext.Borrows.Add(borrow);
+        _dataContext.Borrows.Add(newBorrow);
         await _dataContext.SaveChangesAsync();
         return Ok();
     }
@@ -58,18 +57,18 @@ public class BorrowController :ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<BorrowDto>>> GetAll()
+    public async Task<ActionResult<List<Borrow>>> GetAll()
     {
         var existingBorrows = await _dataContext.Borrows.ToListAsync();
         return Ok(existingBorrows);
     }
     
     [HttpGet("search")]
-    public async Task<ActionResult<IEnumerable<BorrowDto>>> SearchBorrowsByBookId([FromQuery] int bookId)
+    public async Task<ActionResult<IEnumerable<Borrow>>> SearchBorrowsByBookId([FromQuery] int bookId)
     {
         var matchedBorrows = await _dataContext.Borrows
             .Where(b => b.BookId == bookId)
-            .Select(b => new BorrowDto()
+            .Select(b => new Borrow()
             {
                 BorrowId = b.BorrowId,
                 BookId = b.BookId,
@@ -83,7 +82,7 @@ public class BorrowController :ControllerBase
     }
     
     [HttpGet("{borrowId}")]
-    public async Task<ActionResult<BorrowDto>> Get(int borrowId)
+    public async Task<ActionResult<Borrow>> Get(int borrowId)
     {
         var existingBorrow = await _dataContext.Borrows.FindAsync(borrowId);
 
@@ -92,7 +91,7 @@ public class BorrowController :ControllerBase
             return NotFound();
         }
         
-        var borrowDto = new BorrowDto()
+        var newBorrow = new Borrow()
         {
             BorrowId = borrowId,
             BookId = existingBorrow.BookId,
@@ -101,13 +100,13 @@ public class BorrowController :ControllerBase
             DateOfReturn = existingBorrow.DateOfReturn
         };
         
-        return Ok(borrowDto);
+        return Ok(newBorrow);
     }
 
     [HttpPut("{borrowId}")]
-    public async Task<IActionResult> Update(int borrowId, [FromBody] BorrowDto borrowDto)
+    public async Task<IActionResult> Update(int borrowId, [FromBody] Borrow borrow)
     {
-        if (borrowId != borrowDto.BorrowId)
+        if (borrowId != borrow.BorrowId)
         {
             return BadRequest("Mismatched borrow ID.");
         }
@@ -119,10 +118,10 @@ public class BorrowController :ControllerBase
             return NotFound();
         }
         
-        existingBorrow.BookId = borrowDto.BookId;
-        existingBorrow.ReaderId = borrowDto.ReaderId;
-        existingBorrow.DateOfBorrow = borrowDto.DateOfBorrow;
-        existingBorrow.DateOfReturn = borrowDto.DateOfReturn;
+        existingBorrow.BookId = borrow.BookId;
+        existingBorrow.ReaderId = borrow.ReaderId;
+        existingBorrow.DateOfBorrow = borrow.DateOfBorrow;
+        existingBorrow.DateOfReturn = borrow.DateOfReturn;
 
         await _dataContext.SaveChangesAsync();
         return Ok();

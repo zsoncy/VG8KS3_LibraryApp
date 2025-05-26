@@ -90,12 +90,21 @@
                 <p>Add book to the database.</p>
                 
                 <EditForm Model="@bookToAdd" OnValidSubmit="@HandleAddBook" class=" d-flex flex-column justify-content-center align-items-center">
+                    <DataAnnotationsValidator />
                     
                     <InputText @bind-Value="bookToAdd.Title" placeholder="Title" class="form-control mb-2"/>
-                    <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2"/>
-                    <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2"/>
-                    <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => bookToAdd.Title)" />
                     
+                    <InputText @bind-Value="bookToAdd.Author" placeholder="Author" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => bookToAdd.Author)" />
+
+                    <InputText @bind-Value="bookToAdd.Publisher" placeholder="Publisher" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => bookToAdd.Publisher)" />
+
+                    <InputNumber @bind-Value="bookToAdd.ReleaseDate" placeholder="Release Date" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => bookToAdd.ReleaseDate)" />
+
+
                     <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
                         <span class="bi bi-plus-square" aria-hidden="true"></span> Add
                     </button>

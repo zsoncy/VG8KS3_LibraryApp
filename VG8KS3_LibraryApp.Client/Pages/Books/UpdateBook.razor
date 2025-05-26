@@ -27,6 +27,7 @@ else
     <h3 class="mb-5 mt-5">Update the details of the book: "@bookToUpdate.Title".</h3>
     
     <EditForm Model="@bookToUpdate" OnValidSubmit="@HandleUpdateBook" class=" d-flex flex-column justify-content-center align-items-center">
+        <DataAnnotationsValidator />
         
         <table class="table table-striped table-bordered mt-5 mb-5">
             
@@ -44,15 +45,19 @@ else
             <tr>
                 <td>
                     <InputText @bind-Value="@bookToUpdate.Title" placeholder=@bookToUpdate.Title class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => bookToUpdate.Title)" />
                 </td>
                 <td>
                     <InputText @bind-Value="@bookToUpdate.Author" placeholder=@bookToUpdate.Author class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => bookToUpdate.Author)" />
                 </td>
                 <td>
                     <InputText @bind-Value="@bookToUpdate.Publisher" placeholder=@bookToUpdate.Publisher class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => bookToUpdate.Publisher)" />
                 </td>
                 <td>
                     <InputNumber @bind-Value="@bookToUpdate.ReleaseDate" placeholder=@bookToUpdate.ReleaseDate class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => bookToUpdate.ReleaseDate)" />
                 </td>
                 <td class="text-center align-middle">
                     <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">

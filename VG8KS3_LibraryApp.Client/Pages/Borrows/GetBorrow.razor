@@ -46,20 +46,24 @@ else
         <thead>
         <tr>
             <th>Book ID</th>
+            <th>Book's Title</th>
             <th>Reader ID</th>
+            <th>Reader's Name</th>
             <th>Date of borrow</th>
             <th>Date of return</th>
         </tr>
         </thead>
         
         <tbody>
-        @foreach (var borrow in borrows)
+        @foreach (var b in borrows)
         {
             <tr>
-                <td>@borrow.BookId</td>
-                <td>@borrow.ReaderId</td>
-                <td>@($"{borrow.DateOfBorrow.Year}. {borrow.DateOfBorrow.Month}. {borrow.DateOfBorrow.Day}")</td>
-                <td>@($"{borrow.DateOfReturn.Year}. {borrow.DateOfReturn.Month}. {borrow.DateOfReturn.Day}")</td>
+                <td>@b.BookId</td>
+                <td>@(bookTitles.ContainsKey(b.BookId) ? bookTitles[b.BookId] : "N/A")</td>
+                <td>@b.ReaderId</td>
+                <td>@(readerNames.ContainsKey(b.ReaderId) ? readerNames[b.ReaderId] : "N/A")</td>
+                <td>@($"{b.DateOfBorrow.Year}. {b.DateOfBorrow.Month}. {b.DateOfBorrow.Day}")</td>
+                <td>@($"{b.DateOfReturn.Year}. {b.DateOfReturn.Month}. {b.DateOfReturn.Day}")</td>
             </tr>
         }
         </tbody>
@@ -83,6 +87,22 @@ else
     /// </summary>
     private List<Borrow>? borrows;
     
+    /// <summary>
+    /// dictionary of the book titles corresponding to each borrow in the database
+    /// </summary>
+    private Dictionary<int, string> bookTitles = new();
+    
+    /// <summary>
+    /// dictionary of the reader names corresponding to each borrow in the database
+    /// </summary>
+    private Dictionary<int, string> readerNames = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadContentAsync();
+    }
+    
     
     protected override async Task OnParametersSetAsync()
     {
@@ -93,11 +113,11 @@ else
     /// method to load the matching data from the database based on the bookId,
     /// in other words, to SEARCH BORROW from the database via HTTP Controllers
     /// </summary>
-    private async Task LoadContentAsync()
+    private async Task LoadBorrowsAsync()
     {
         string url;
 
-        if (bookId == null)
+        if (bookId == null || bookId == 0)
         {
             url = "api/Borrow/";
         }
@@ -115,6 +135,34 @@ else
         else
         {
             borrows = new();
+        }
+    }
+    
+    /// <summary>
+    /// method to fill the dictionaries up with the correct book titles and reader names
+    /// </summary>
+    private async Task LoadContentAsync()
+    {
+        await LoadBorrowsAsync();
+
+        if (borrows != null)
+        {
+            var bookIds = borrows.Select(b => b.BookId).Distinct();
+            var readerIds = borrows.Select(b => b.ReaderId).Distinct();
+
+            foreach (var id in bookIds)
+            {
+                var book = await Http.GetFromJsonAsync<Book>($"api/Book/{id}");
+                if (book != null && !bookTitles.ContainsKey(id))
+                    bookTitles[id] = book.Title;
+            }
+
+            foreach (var id in readerIds)
+            {
+                var reader = await Http.GetFromJsonAsync<Reader>($"api/Reader/{id}");
+                if (reader != null && !readerNames.ContainsKey(id))
+                    readerNames[id] = reader.Name;
+            }
         }
     }
     

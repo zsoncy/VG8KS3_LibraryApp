@@ -75,6 +75,8 @@
 
                 <EditForm Model="@readerSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
 
+                    <p>Search readers by name.</p>
+                    
                     <InputText @bind-Value="readerSearch.Query" placeholder="Search by name..." class="form-control mb-2"/>
 
                     <button type="submit" class="btn btn-primary btn-outline-light w-75">
@@ -83,6 +85,8 @@
 
                 </EditForm>
 
+                <p>Add reader to the database.</p>
+                
                 <EditForm Model="@readerToAdd" OnValidSubmit="@HandleAddReader" class=" d-flex flex-column justify-content-center align-items-center">
 
                     <InputText @bind-Value="readerToAdd.Name" placeholder="Name" class="form-control mb-2"/>

@@ -35,7 +35,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Book ID</th>
+                        <th>Book's Title</th>
                         <th>Reader ID</th>
+                        <th>Reader's Name</th>
                         <th>Date of borrow</th>
                         <th>Date of return</th>
                         <th>Update</th>
@@ -49,7 +51,9 @@
                         <tr>
                             <td>@b.BorrowId</td>
                             <td>@b.BookId</td>
+                            <td>@(bookTitles.ContainsKey(b.BookId) ? bookTitles[b.BookId] : "N/A")</td>
                             <td>@b.ReaderId</td>
+                            <td>@(readerNames.ContainsKey(b.ReaderId) ? readerNames[b.ReaderId] : "N/A")</td>
                             <td>@($"{b.DateOfBorrow.Year}. {b.DateOfBorrow.Month}. {b.DateOfBorrow.Day}")</td>
                             <td>@($"{b.DateOfReturn.Year}. {b.DateOfReturn.Month}. {b.DateOfReturn.Day}")</td>
                             <td>
@@ -74,7 +78,9 @@
         <div class="col-2 d-flex h-50">
 
             <div class=" flex-column d-flex justify-content-around align-items-center text-white">
-
+                
+                <p>Search borrows by book ID.</p>
+                
                 <EditForm Model="@borrowSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
 
                     <InputNumber @bind-Value="borrowSearch.bookId" placeholder="Search by book ID..." class="form-control mb-2"/>
@@ -85,6 +91,8 @@
 
                 </EditForm>
 
+                <p>Add borrow to the database.</p>
+                
                 <EditForm Model="@borrowToAdd" OnValidSubmit="@HandleAddBorrow" class=" d-flex flex-column justify-content-center align-items-center">
                     
                     <InputNumber @bind-Value="borrowToAdd.BookId" placeholder="Book ID" class="form-control mb-2"/>
@@ -114,11 +122,21 @@
 @code {
 
     [Inject] private NavigationManager Navigation { get; set; } = default!;
-
+    
     /// <summary>
     /// list of all the borrow objects in the database
     /// </summary>
     private List<Borrow>? borrows;
+    
+    /// <summary>
+    /// dictionary of the book titles corresponding to each borrow in the database
+    /// </summary>
+    private Dictionary<int, string> bookTitles = new();
+    
+    /// <summary>
+    /// dictionary of the reader names corresponding to each borrow in the database
+    /// </summary>
+    private Dictionary<int, string> readerNames = new();
 
     /// <summary>
     /// the borrow object we want to add to the database
@@ -128,7 +146,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadBorrowsAsync();
+        await LoadContentAsync();
     }
 
     /// <summary>
@@ -137,6 +155,34 @@
     private async Task LoadBorrowsAsync()
     {
         borrows = await Http.GetFromJsonAsync<List<Borrow>>("api/Borrow");
+    }
+    
+    /// <summary>
+    /// method to fill the dictionaries up with the correct book titles and reader names
+    /// </summary>
+    private async Task LoadContentAsync()
+    {
+        await LoadBorrowsAsync();
+
+        if (borrows != null)
+        {
+            var bookIds = borrows.Select(b => b.BookId).Distinct();
+            var readerIds = borrows.Select(b => b.ReaderId).Distinct();
+
+            foreach (var id in bookIds)
+            {
+                var book = await Http.GetFromJsonAsync<Book>($"api/Book/{id}");
+                if (book != null && !bookTitles.ContainsKey(id))
+                    bookTitles[id] = book.Title;
+            }
+
+            foreach (var id in readerIds)
+            {
+                var reader = await Http.GetFromJsonAsync<Reader>($"api/Reader/{id}");
+                if (reader != null && !readerNames.ContainsKey(id))
+                    readerNames[id] = reader.Name;
+            }
+        }
     }
 
     /// <summary>

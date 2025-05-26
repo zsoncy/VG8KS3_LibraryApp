@@ -73,8 +73,10 @@
 
         <div class="col-2 d-flex h-50">
 
-            <div class=" flex-column d-flex justify-content-around align-items-center text-white">            
-           
+            <div class=" flex-column d-flex justify-content-around align-items-center text-white">
+
+                <p>Search books by title.</p>
+                
                 <EditForm Model="@bookSearch" OnValidSubmit="@NavigateToSearchPage" class="d-flex flex-column justify-content-center align-items-center mt-4">
                     
                     <InputText @bind-Value="bookSearch.Query" placeholder="Search by title..." class="form-control mb-2"/>
@@ -84,6 +86,8 @@
                     </button>
                     
                 </EditForm>
+
+                <p>Add book to the database.</p>
                 
                 <EditForm Model="@bookToAdd" OnValidSubmit="@HandleAddBook" class=" d-flex flex-column justify-content-center align-items-center">
                     

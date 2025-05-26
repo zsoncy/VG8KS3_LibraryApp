@@ -36,7 +36,7 @@ public class ReaderController: ControllerBase
         
         _dataContext.Readers.Add(newReader);
         await _dataContext.SaveChangesAsync();
-        return Ok();
+        return CreatedAtAction(nameof(Get), new { id = newReader.ReaderId }, newReader);
     }
 
     [HttpDelete("{readerId}")]
@@ -100,9 +100,9 @@ public class ReaderController: ControllerBase
     }
 
     [HttpPut("{readerId}")]
-    public async Task<IActionResult> Update(int readerId, [FromBody] Reader readerfasz)
+    public async Task<IActionResult> Update(int readerId, [FromBody] Reader reader)
     {
-        if (readerId != readerfasz.ReaderId)
+        if (readerId != reader.ReaderId)
         {
             return BadRequest("Mismatched reader ID.");
         }
@@ -114,12 +114,13 @@ public class ReaderController: ControllerBase
             return NotFound();
         }
         
-        existingReader.Name = readerfasz.Name;
-        existingReader.Adress = readerfasz.Adress;
-        existingReader.DateOfBirth = readerfasz.DateOfBirth;
+        existingReader.Name = reader.Name;
+        existingReader.Adress = reader.Adress;
+        existingReader.DateOfBirth = reader.DateOfBirth;
         
         await _dataContext.SaveChangesAsync();
-        return Ok();
+        return NoContent();
+        
     }
     
     

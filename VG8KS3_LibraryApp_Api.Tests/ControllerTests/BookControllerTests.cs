@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using VG8KS3_LibraryApp_Api.Tests.TestUtilities;
 
+namespace VG8KS3_LibraryApp_Api.Tests.ControllerTests;
+
 public class BooksControllerTests
 {
     private readonly BookController _controller;
@@ -34,7 +36,7 @@ public class BooksControllerTests
     }
 
     [Fact]
-    public async Task GetBooks_ReturnsAllBooks()
+    public async Task HaveBooks_GetAllBooks_ReturnsAllBooks()
     {
         var result = await _controller.GetAll();
 
@@ -44,7 +46,7 @@ public class BooksControllerTests
     }
     
     [Fact]
-    public async Task AddBook_ValidBook_ReturnsCreatedBook()
+    public async Task ValidBook_AddBook_ReturnsCreatedBook()
     {
         var newBook = new Book()
         {

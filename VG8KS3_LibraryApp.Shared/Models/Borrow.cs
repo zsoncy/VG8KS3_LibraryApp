@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using VG8KS3_LibraryApp.Shared.Validation;
 
 namespace VG8KS3_LibraryApp.Shared.Models;
 
@@ -15,26 +16,12 @@ public class Borrow
     public int BookId { get; set; }
     
     [Required(ErrorMessage = "A starting date is required for a borrow.")]
+    [BorrowDatesValidation]
     public DateTime DateOfBorrow { get; set; }
     
-    
+    [Required(ErrorMessage = "The estimated return date is required for a borrow.")]
+    [BorrowDatesValidation]
     public DateTime DateOfReturn { get; set; }
     
-    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-    {
-        if (DateOfBorrow < DateTime.Now)
-        {
-            yield return new ValidationResult(
-                "The starting date of the borrowing cannot be earlier than the current date.",
-                new[] { nameof(DateOfBorrow) });
-        }
-
-        if (DateOfReturn < DateOfBorrow)
-        {
-            yield return new ValidationResult(
-                "The ending date of the borrowing cannot be earlier than it's starting date.",
-                new[] { nameof(DateOfReturn) });
-        }
-    }
 }
     

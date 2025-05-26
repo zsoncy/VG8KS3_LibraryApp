@@ -27,7 +27,8 @@ else
     <h3 class="mb-5 mt-5">Update the details of a borrow.</h3>
     
     <EditForm Model="@borrowToUpdate" OnValidSubmit="@HandleUpdateBorrow" class=" d-flex flex-column justify-content-center align-items-center">
-        
+        <DataAnnotationsValidator />
+
         <table class="table table-striped table-bordered mt-5 mb-5 text-center align-middle">
             
             <thead>
@@ -44,15 +45,19 @@ else
             <tr>
                 <td>
                     <InputNumber @bind-Value="borrowToUpdate.BookId" placeholder="Book ID" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => borrowToUpdate.BookId)" />
                 </td>
                 <td>
                     <InputNumber @bind-Value="borrowToUpdate.ReaderId" placeholder="Reader ID" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => borrowToUpdate.ReaderId)" />
                 </td>
                 <td>
                     <InputDate @bind-Value="borrowToUpdate.DateOfBorrow" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => borrowToUpdate.DateOfBorrow)" />
                 </td>
                 <td>
                     <InputDate @bind-Value="borrowToUpdate.DateOfReturn" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => borrowToUpdate.DateOfReturn)" />
                 </td>
                 <td>
                     <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">

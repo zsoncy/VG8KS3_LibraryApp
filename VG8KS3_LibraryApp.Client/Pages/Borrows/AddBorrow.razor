@@ -18,8 +18,10 @@
 <h3 class="mb-5 mt-5">Add a new borrow to the database.</h3>
 
 <EditForm Model="@borrowToAdd" OnValidSubmit="@HandleAddBorrow" class=" d-flex flex-column justify-content-center align-items-center">
+    <DataAnnotationsValidator />
+
     <table class="table table-striped table-bordered mt-5 mb-5 text-center align-middle">
-        
+
         <thead>
         <tr>
             <th>Book ID</th>
@@ -29,20 +31,25 @@
             <th>Publish</th>
         </tr>
         </thead>
-        
+
         <tbody>
         <tr>
             <td>
                 <InputNumber @bind-Value="borrowToAdd.BookId" placeholder="Book ID" class="form-control mb-2"/>
+                <ValidationMessage For="@(() => borrowToAdd.BookId)" />
+
             </td>
             <td>
                 <InputNumber @bind-Value="borrowToAdd.ReaderId" placeholder="Reader ID" class="form-control mb-2"/>
+                <ValidationMessage For="@(() => borrowToAdd.ReaderId)" />
             </td>
             <td>
                 <InputDate @bind-Value="borrowToAdd.DateOfBorrow" class="form-control mb-2"/>
+                <ValidationMessage For="@(() => borrowToAdd.DateOfBorrow)" />
             </td>
             <td>
                 <InputDate @bind-Value="borrowToAdd.DateOfReturn" class="form-control mb-2"/>
+                <ValidationMessage For="@(() => borrowToAdd.DateOfReturn)" />
             </td>
             <td>
                 <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
@@ -51,7 +58,7 @@
             </td>
         </tr>
         </tbody>
-    
+
     </table>
 </EditForm>
 

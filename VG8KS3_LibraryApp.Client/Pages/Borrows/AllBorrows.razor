@@ -94,11 +94,19 @@
                 <p>Add borrow to the database.</p>
                 
                 <EditForm Model="@borrowToAdd" OnValidSubmit="@HandleAddBorrow" class=" d-flex flex-column justify-content-center align-items-center">
+                    <DataAnnotationsValidator />
                     
                     <InputNumber @bind-Value="borrowToAdd.BookId" placeholder="Book ID" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => borrowToAdd.BookId)" />
+
                     <InputNumber @bind-Value="borrowToAdd.ReaderId" placeholder="Reader ID" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => borrowToAdd.ReaderId)" />
+
                     <InputDate @bind-Value="borrowToAdd.DateOfBorrow" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => borrowToAdd.DateOfBorrow)" />
+
                     <InputDate @bind-Value="borrowToAdd.DateOfReturn" class="form-control mb-2"/>
+                    <ValidationMessage For="@(() => borrowToAdd.DateOfReturn)" />
 
                     <button type="submit" class="btn btn-primary btn-outline-light mb-3 w-75">
                         <span class="bi bi-plus-square" aria-hidden="true"></span> Add
